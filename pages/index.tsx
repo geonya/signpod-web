@@ -1,7 +1,8 @@
 import { Box, Container, Grid, Typography } from '@mui/material'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import AccountProfile from '../components/AccountProfile'
+import AccountDetails from '../components/account/AccountDetails'
+import AccountProfile from '../components/account/AccountProfile'
 import Loader from '../components/Loader'
 import { useMe } from '../hooks/useMe'
 
@@ -23,7 +24,7 @@ const Home: NextPage = () => {
               <AccountProfile {...data.getMe.user} />
             </Grid>
             <Grid item lg={8} md={6} xs={12}>
-              AccountPrfoileDetails
+              <AccountDetails {...data.getMe.user} />
             </Grid>
           </Grid>
         </Container>

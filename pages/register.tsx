@@ -57,7 +57,7 @@ const Register: NextPage = () => {
         .matches(/^[a-zA-Z0-9]{2,10}$/g, '영문이나 숫자만 사용해주세요.')
         .max(10, '10자 이하만 가능합니다.')
         .min(2, '2자 이상 입력해주세요')
-        .required('이메일을 입력해주세요'),
+        .required('이름을 입력해주세요'),
       email: Yup.string()
         .email('이메일 형식이 올바르지 않습니다.')
         .max(255)

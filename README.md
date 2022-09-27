@@ -7,4 +7,6 @@ _220926_
 - [x] NextJS Init
 - [x] Material UI Init
 - [x] Apollo Client setup
-- [ ] 로그인 / 회원가입 page layout
+- [x] 로그인 / 회원가입 page layout
+- [x] Account Profile Layout
+- [ ] Update Account

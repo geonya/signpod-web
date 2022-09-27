@@ -13,13 +13,8 @@ import {
   PRIMARY,
   TEXT_PRIMARY,
   TEXT_SECONDARY,
-} from '../constants'
-
-interface AccountProfileProps {
-  name: string
-  email: string
-  avatar?: string
-}
+} from '../../constants'
+import { AccountProfileProps } from './account.interfaces'
 
 const AccountProfile = ({ name, email, avatar }: AccountProfileProps) => {
   return (
