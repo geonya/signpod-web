@@ -1,17 +1,39 @@
-import '../styles/globals.css'
-import '@fontsource/roboto/300.css'
-import '@fontsource/roboto/400.css'
-import '@fontsource/roboto/500.css'
-import '@fontsource/roboto/700.css'
-
 import type { AppProps } from 'next/app'
-import { CssBaseline } from '@mui/material'
+import { CircularProgress, CssBaseline, ThemeProvider } from '@mui/material'
+import Head from 'next/head'
+import { theme } from '../theme'
+import { CacheProvider, EmotionCache } from '@emotion/react'
+import createEmotionCache from '../utils/createEmotionCache'
+import { useEffect, useState } from 'react'
 
-function MyApp({ Component, pageProps }: AppProps) {
+// Client-side cache, shared for the whole session of the user in the browser.
+const clientSideEmotionCache = createEmotionCache()
+
+interface MyAppProps extends AppProps {
+  emotionCache?: EmotionCache
+}
+
+function MyApp(props: MyAppProps) {
+  const { Component, pageProps, emotionCache = clientSideEmotionCache } = props
+
+  // hydration error fix
+  const [mount, setMount] = useState(false)
+  useEffect(() => {
+    setMount(true)
+  }, [])
+  if (!mount) return <></>
   return (
     <>
-      <CssBaseline />
-      <Component {...pageProps} />
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <title>signpod inc</title>
+          <meta name='viewport' content='initial-scale=1, width=device-width' />
+        </Head>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </CacheProvider>
     </>
   )
 }
