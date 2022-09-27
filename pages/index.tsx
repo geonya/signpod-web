@@ -1,21 +1,33 @@
-import { Button, Typography } from '@mui/material'
+import { Box, Container, Grid, Typography } from '@mui/material'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Link from '../components/Link'
-import { TEXT_PRIMARY } from '../constants'
+import AccountProfile from '../components/AccountProfile'
+import Loader from '../components/Loader'
 import { useMe } from '../hooks/useMe'
 
 const Home: NextPage = () => {
-  const { data, loading } = useMe()
-  console.log(data)
+  const { data } = useMe()
+  if (!data || !data.getMe.user) return <Loader />
   return (
     <>
       <Head>
         <title>SignPod | Branding Signage Design</title>
       </Head>
-      <Typography color={TEXT_PRIMARY} variant='h4'>
-        {data?.getMe.user?.name}
-      </Typography>
+      <Box component='main' sx={{ flexGrow: 1, py: 8 }}>
+        <Container maxWidth='lg'>
+          <Typography sx={{ mb: 3 }} variant='h4'>
+            내 계정
+          </Typography>
+          <Grid container spacing={3}>
+            <Grid item lg={4} md={6} xs={12}>
+              <AccountProfile {...data.getMe.user} />
+            </Grid>
+            <Grid item lg={8} md={6} xs={12}>
+              AccountPrfoileDetails
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
     </>
   )
 }
