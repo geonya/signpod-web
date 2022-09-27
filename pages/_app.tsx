@@ -1,19 +1,18 @@
 import '../styles/globals.css'
-import '@aws-amplify/ui-react/styles.css'
-import config from '../src/aws-exports'
-import { Amplify } from 'aws-amplify'
-Amplify.configure(config)
-
-import { ThemeProvider } from '@aws-amplify/ui-react'
+import '@fontsource/roboto/300.css'
+import '@fontsource/roboto/400.css'
+import '@fontsource/roboto/500.css'
+import '@fontsource/roboto/700.css'
 
 import type { AppProps } from 'next/app'
-import { studioTheme } from '../src/ui-components'
+import { CssBaseline } from '@mui/material'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider theme={studioTheme}>
+    <>
+      <CssBaseline />
       <Component {...pageProps} />
-    </ThemeProvider>
+    </>
   )
 }
 
