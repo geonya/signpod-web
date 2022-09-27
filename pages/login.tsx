@@ -16,6 +16,7 @@ import { useState } from 'react'
 import * as Yup from 'yup'
 import Link from '../components/Link'
 import { TEXT_SECONDARY } from '../constants'
+import { isAuthenticatedVar } from '../lib/apollo/vars'
 import { useLoginMutation } from '../lib/graphql/__generated__'
 
 const Login: NextPage = () => {
@@ -24,6 +25,7 @@ const Login: NextPage = () => {
   const [login] = useLoginMutation({
     onCompleted(data) {
       if (data.login.ok) {
+        isAuthenticatedVar(true)
         router.push({
           pathname: '/',
         })

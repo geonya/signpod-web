@@ -23,6 +23,19 @@ gql`
       token
     }
   }
+  mutation EditAccount($input:EditAccountInput!) {
+    editAccount(input:$input) {
+      ok
+      error
+    }
+  }
+
+  mutation Logout {
+    logout {
+      ok
+      error
+    }
+  }
 
   query GetMe {
     getMe {

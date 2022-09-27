@@ -5,6 +5,7 @@ import {
   CardContent,
   CardHeader,
   Divider,
+  FormHelperText,
   Grid,
   TextField,
 } from '@mui/material'
@@ -19,8 +20,40 @@ import {
 import * as Yup from 'yup'
 
 import { AccountProfileProps } from './account.interfaces'
+import {
+  useEditAccountMutation,
+  useLogoutMutation,
+} from '../../lib/graphql/__generated__'
+import { useState } from 'react'
+import { gql, useApolloClient } from '@apollo/client'
+import { useRouter } from 'next/router'
+import { isAuthenticatedVar } from '../../lib/apollo/vars'
 
-const AccountDetails = ({ name, email }: AccountProfileProps) => {
+const AccountDetails = ({ id, name, email }: AccountProfileProps) => {
+  const client = useApolloClient()
+  const router = useRouter()
+  const [editError, setEditError] = useState('')
+  const [editAccount, { loading }] = useEditAccountMutation({
+    onCompleted(data) {
+      if (data.editAccount.ok) {
+        client.writeFragment({
+          id: `User:${id}`,
+          fragment: gql`
+            fragment editedUser on User {
+              name
+              email
+            }
+          `,
+          data: {
+            email: formik.values.email,
+            name: formik.values.name,
+          },
+        })
+      } else if (data.editAccount.error) {
+        setEditError(data.editAccount.error)
+      }
+    },
+  })
   const formik = useFormik({
     initialValues: {
       name,
@@ -40,14 +73,38 @@ const AccountDetails = ({ name, email }: AccountProfileProps) => {
       password: Yup.string().min(4, '비밀번호는 4자 이상 입력해주세요').max(16),
     }),
     onSubmit: async (data) => {
-      console.log(data)
+      await editAccount({
+        variables: {
+          input: {
+            id,
+            ...(data.name && data.name !== name && { name: data.name }),
+            ...(data.email && data.email !== email && { email: data.email }),
+            ...(data.password && { password: data.password }),
+          },
+        },
+      })
+    },
+  })
+
+  const [logout, { loading: logoutLoading }] = useLogoutMutation({
+    onCompleted(data) {
+      if (data.logout.ok) {
+        isAuthenticatedVar(false)
+        router.push('/login')
+        client.clearStore()
+      } else if (data.logout.error) {
+        setEditError(data.logout.error)
+      }
     },
   })
 
   return (
-    <form autoComplete='off' noValidate>
+    <form autoComplete='off' onSubmit={formik.handleSubmit}>
       <Card>
         <CardHeader title='나의 정보' subheader='Edit Profile' />
+        {Boolean(editError) && (
+          <FormHelperText error>{editError}</FormHelperText>
+        )}
         <Divider />
         <CardContent>
           <Grid container spacing={3}>
@@ -99,9 +156,25 @@ const AccountDetails = ({ name, email }: AccountProfileProps) => {
           </Grid>
         </CardContent>
         <Divider />
-        <Box sx={{ ...displayFlex, justifyContent: 'flex-end', p: 2 }}>
-          <Button color={PRIMARY} variant={CONTAINED}>
+        <Box
+          sx={{ ...displayFlex, justifyContent: 'flex-end', p: 2 }}
+          gap='1rem'
+        >
+          <Button
+            type='submit'
+            color={PRIMARY}
+            variant={CONTAINED}
+            disabled={formik.isSubmitting || loading}
+          >
             변경하기
+          </Button>
+          <Button
+            color='error'
+            variant={CONTAINED}
+            onClick={() => logout()}
+            disabled={logoutLoading}
+          >
+            로그아웃
           </Button>
         </Box>
       </Card>
