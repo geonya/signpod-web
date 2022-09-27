@@ -2,9 +2,9 @@ _220926_
 
 # Signpod Webpage Rebuilding
 
-### NextJS / AWS Amplify / DynamoDB / Amplify-UI / AWS S3 / Typescript + Graphql
+### NextJS / Typescript + Graphql + Apollo Client / MUI /
 
-- [ ] Amplify Setup
-- [ ] DynamoDB Setup
-- [ ] AWS S3 Setup
-- [ ] UI Setup with figma
+- [x] NextJS Init
+- [x] Material UI Init
+- [x] Apollo Client setup
+- [ ] 로그인 / 회원가입 page layout
