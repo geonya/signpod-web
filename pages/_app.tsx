@@ -8,6 +8,13 @@ import { useEffect, useState } from 'react'
 import Loader from '../components/Loader'
 import { ApolloProvider } from '@apollo/client'
 import { useApollo } from '../lib/apollo/client'
+import { GetServerSideProps } from 'next'
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  return {
+    props: {},
+  }
+}
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()

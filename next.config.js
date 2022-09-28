@@ -1,10 +1,5 @@
 /** @type {import('next').NextConfig} */
-const securityHeaders = [
-  {
-    key: 'Referrer-Policy',
-    value: 'origin-when-cross-origin',
-  },
-]
+const securityHeaders = []
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
