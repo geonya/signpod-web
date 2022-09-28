@@ -66,9 +66,6 @@ const Login: NextPage = () => {
         }}
       >
         <Container maxWidth='sm'>
-          <Link href='/' passHref>
-            <Button startIcon={<ArrowBack fontSize='small' />}>메인으로</Button>
-          </Link>
           <form onSubmit={formik.handleSubmit}>
             <Box sx={{ my: 3 }}>
               <Typography color='textPrimary' variant='h4'>

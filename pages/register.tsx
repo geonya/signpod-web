@@ -95,9 +95,6 @@ const Register: NextPage = () => {
         }}
       >
         <Container maxWidth='sm'>
-          <Link href='/'>
-            <Button startIcon={<ArrowBack fontSize='small' />}>메인으로</Button>
-          </Link>
           <form onSubmit={formik.handleSubmit}>
             <Box sx={{ my: 3 }}>
               <Typography color={TEXT_PRIMARY} variant='h4'>
