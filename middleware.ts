@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { JWT_TOKEN } from './constants'
 
 export function middleware(req: NextRequest) {
-  const token = req.cookies.get(JWT_TOKEN)
+  const res = NextResponse.next()
+  const token = res.cookies.get(JWT_TOKEN)
+
   if (
     req.nextUrl.pathname.startsWith('/_next') ||
     req.nextUrl.pathname.startsWith('/favicon.ico')
