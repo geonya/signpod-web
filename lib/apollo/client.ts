@@ -30,7 +30,10 @@ function createApolloClient(ctx: NextPageContext | null) {
     return forward(operation)
   })
   const uploadHttpLink = createUploadLink({
-    uri: 'https://signpod-back-kmjnhjkr4a-du.a.run.app/graphql',
+    uri:
+      process.env.NODE_ENV === 'production'
+        ? 'https://signpod-back-kmjnhjkr4a-du.a.run.app/graphql'
+        : 'http://localhost:8080/graphql',
     credentials: 'include',
   })
 
