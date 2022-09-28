@@ -29,6 +29,7 @@ function createApolloClient(ctx: NextPageContext | null) {
     })
     return forward(operation)
   })
+
   const uploadHttpLink = createUploadLink({
     uri:
       process.env.NODE_ENV === 'production'
