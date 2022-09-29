@@ -7,8 +7,8 @@ import createEmotionCache from '../utils/createEmotionCache'
 import { useEffect, useState } from 'react'
 import Loader from '../components/Loader'
 import { ApolloProvider } from '@apollo/client'
-import { useApollo } from '../lib/apollo/client'
 import { GetServerSideProps } from 'next'
+import client from '../lib/apollo/client'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return {
@@ -26,8 +26,6 @@ interface MyAppProps extends AppProps {
 function MyApp(props: MyAppProps) {
   const { Component, pageProps, emotionCache = clientSideEmotionCache } = props
 
-  const apolloClient = useApollo(pageProps)
-
   // hydration error fix
   const [mount, setMount] = useState(false)
   useEffect(() => {
@@ -37,7 +35,7 @@ function MyApp(props: MyAppProps) {
 
   return (
     <>
-      <ApolloProvider client={apolloClient}>
+      <ApolloProvider client={client}>
         <CacheProvider value={emotionCache}>
           <Head>
             <title>signpod inc</title>
