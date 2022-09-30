@@ -167,7 +167,7 @@ const AccountDetails = ({ id, name, email }: AccountProfileProps) => {
             variant={CONTAINED}
             disabled={formik.isSubmitting || loading}
           >
-            변경하기
+            저장하기
           </Button>
           <Button
             color='error'
