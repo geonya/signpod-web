@@ -27,9 +27,10 @@ import {
 import { useState } from 'react'
 import { gql, useApolloClient } from '@apollo/client'
 import { useRouter } from 'next/router'
-import { isAuthenticatedVar } from '../../lib/apollo/vars'
+import { useAuth } from '../../lib/auth'
 
 const AccountDetails = ({ id, name, email }: AccountProfileProps) => {
+  const auth = useAuth()
   const client = useApolloClient()
   const router = useRouter()
   const [editError, setEditError] = useState('')
@@ -88,8 +89,8 @@ const AccountDetails = ({ id, name, email }: AccountProfileProps) => {
 
   const [logout, { loading: logoutLoading }] = useLogoutMutation({
     onCompleted(data) {
-      if (data.logout.ok) {
-        isAuthenticatedVar(false)
+      if (data.logout.ok && auth) {
+        auth.logoutFn()
         router.push('/login')
         client.clearStore()
       } else if (data.logout.error) {

@@ -16,19 +16,19 @@ import { useState } from 'react'
 import * as Yup from 'yup'
 import Link from '../components/Link'
 import { TEXT_SECONDARY } from '../constants'
-import { isAuthenticatedVar } from '../lib/apollo/vars'
+import { useAuth } from '../lib/auth'
 import { useLoginMutation } from '../lib/graphql/__generated__'
 
 const Login: NextPage = () => {
+  const auth = useAuth()
   const router = useRouter()
   const [loginError, setLoginError] = useState('')
-  const [login] = useLoginMutation({
+
+  const [login, { loading }] = useLoginMutation({
     onCompleted(data) {
-      if (data.login.ok) {
-        isAuthenticatedVar(true)
-        router.push({
-          pathname: '/',
-        })
+      if (data.login.ok && data.login.token && auth) {
+        auth.loginFn(data.login.token)
+        router.push('/')
       } else if (data.login.error) {
         setLoginError(data.login.error)
       }
@@ -144,7 +144,7 @@ const Login: NextPage = () => {
               <Box sx={{ py: 2 }}>
                 <Button
                   color='primary'
-                  disabled={formik.isSubmitting}
+                  disabled={formik.isSubmitting || loading}
                   fullWidth
                   size='large'
                   type='submit'

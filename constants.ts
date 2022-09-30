@@ -1,4 +1,4 @@
-export const JWT_TOKEN = 'jwt-token'
+export const JWT_TOKEN = 'signpod-token'
 export const TEXT_PRIMARY = 'textPrimary'
 export const TEXT_SECONDARY = 'textSecondary'
 export const NORMAL = 'normal'

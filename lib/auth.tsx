@@ -1,5 +1,5 @@
 import { ApolloProvider } from '@apollo/client'
-import { createContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { JWT_TOKEN } from '../constants'
 import { initializeApollo } from './apollo/client'
 import * as jwt from 'jsonwebtoken'
@@ -9,13 +9,25 @@ interface AuthProviderProps {
   children: React.ReactNode
 }
 
-const authContext = createContext({})
+interface ContextTypes {
+  craeteApolloClient: () => void
+  isLoggedIn: () => boolean
+  loginFn: (token: string) => void
+  logoutFn: () => void
+  getToken: () => void
+}
 
+const authContext = createContext<ContextTypes | null>(null)
+
+export const useAuth = () => {
+  return useContext(authContext)
+}
 export function AuthProvider({ children }: AuthProviderProps) {
   const auth = useProvideAuth()
   const router = useRouter()
-  const isAuthenticated = auth.isLoggedIn()
   useEffect(() => {
+    auth.getToken()
+    const isAuthenticated = auth.isLoggedIn()
     if (isAuthenticated) {
       if (
         router.pathname.includes('login') ||
@@ -32,7 +44,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         router.replace({ pathname: '/login' })
       }
     }
-  }, [isAuthenticated, router])
+  }, [router, auth])
   return (
     <authContext.Provider value={auth}>
       <ApolloProvider client={auth.craeteApolloClient()}>
@@ -48,7 +60,7 @@ function useProvideAuth() {
   const isLoggedIn = () => {
     if (!token) return false
     try {
-      const decoded = jwt.verify(token, process.env.PRIVATE_KEY!)
+      const decoded = jwt.verify(token, process.env.NEXT_PUBLIC_PRIVATE_KEY!)
       if (typeof decoded === 'object' && decoded.hasOwnProperty('id')) {
         return true
       } else {
@@ -61,12 +73,12 @@ function useProvideAuth() {
   }
 
   const getToken = () => {
-    if (!token) return null
-    return { [JWT_TOKEN]: token || '' }
+    const token = localStorage.getItem(JWT_TOKEN)
+    setToken(token)
   }
 
   const craeteApolloClient = () => {
-    return initializeApollo(getToken())
+    return initializeApollo(token)
   }
 
   const loginFn = (token: string) => {
@@ -80,6 +92,7 @@ function useProvideAuth() {
   }
 
   return {
+    getToken,
     craeteApolloClient,
     isLoggedIn,
     loginFn,

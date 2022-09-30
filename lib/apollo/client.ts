@@ -3,7 +3,7 @@ import { onError } from '@apollo/client/link/error'
 import { createUploadLink } from 'apollo-upload-client'
 import { JWT_TOKEN } from '../../constants'
 
-export function initializeApollo(getToken?: { [key: string]: string } | null) {
+export function initializeApollo(token?: string | null) {
   const uploadHttpLink = createUploadLink({
     uri:
       process.env.NODE_ENV === 'production'
@@ -17,7 +17,7 @@ export function initializeApollo(getToken?: { [key: string]: string } | null) {
       return {
         headers: {
           ...headers,
-          ...getToken,
+          [JWT_TOKEN]: token,
         },
       }
     })
