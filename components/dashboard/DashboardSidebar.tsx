@@ -1,8 +1,7 @@
-import { ChevronLeft, Inbox, Mail } from '@mui/icons-material'
+import { Inbox, Mail } from '@mui/icons-material'
 import {
   Divider,
   Drawer,
-  IconButton,
   List,
   ListItem,
   ListItemButton,
@@ -34,16 +33,18 @@ export const DashboardSidebar = ({ isSidebarOpen }: DashboardSidebarProps) => {
     >
       <Divider />
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <Inbox /> : <Mail />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {['프로젝트 관리', '갤러리', '실시간 상담', '디자인'].map(
+          (text, index) => (
+            <ListItem key={text} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  {index % 2 === 0 ? <Inbox /> : <Mail />}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </ListItem>
+          ),
+        )}
       </List>
     </Drawer>
   )
