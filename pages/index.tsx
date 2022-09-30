@@ -3,6 +3,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import AccountDetails from '../components/account/AccountDetails'
 import AccountProfile from '../components/account/AccountProfile'
+import { DashBoardLayout } from '../components/dashboard/DashboardLayout'
 import Loader from '../components/Loader'
 import { useMe } from '../hooks/useMe'
 
@@ -14,7 +15,7 @@ const Home: NextPage = () => {
       <Head>
         <title>SignPod | Branding Signage Design</title>
       </Head>
-      <Box component='main' sx={{ flexGrow: 1, py: 8 }}>
+      <DashBoardLayout>
         <Container maxWidth='lg'>
           <Typography sx={{ mb: 3 }} variant='h4'>
             내 계정
@@ -28,7 +29,7 @@ const Home: NextPage = () => {
             </Grid>
           </Grid>
         </Container>
-      </Box>
+      </DashBoardLayout>
     </>
   )
 }

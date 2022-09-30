@@ -8,7 +8,7 @@ export function initializeApollo(token?: string | null) {
     uri:
       process.env.NODE_ENV === 'production'
         ? 'https://signpod-back-kmjnhjkr4a-du.a.run.app/graphql'
-        : 'http://localhost:8080/graphql',
+        : 'http://localhost:4000/graphql',
     credentials: 'include',
   })
 
