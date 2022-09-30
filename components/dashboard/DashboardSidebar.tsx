@@ -8,34 +8,23 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  styled,
 } from '@mui/material'
-import { sidebarWidth } from './DashboardLayout'
+import { navBarHeight, sidebarWidth } from './DashboardLayout'
 
 interface DashboardSidebarProps {
-  onSidebarToggle: (opened: boolean) => void
   isSidebarOpen: boolean
 }
 
-export const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
-  ...theme.mixins.toolbar,
-}))
-
-export const DashboardSidebar = ({
-  isSidebarOpen,
-  onSidebarToggle,
-}: DashboardSidebarProps) => {
+export const DashboardSidebar = ({ isSidebarOpen }: DashboardSidebarProps) => {
   return (
     <Drawer
       sx={{
+        marginTop: navBarHeight,
         width: sidebarWidth,
         flexShrink: 0,
         '& .MuiDrawer-paper': {
           width: sidebarWidth,
+          marginTop: navBarHeight,
           boxSizing: 'border-box',
         },
       }}
@@ -43,11 +32,6 @@ export const DashboardSidebar = ({
       anchor='left'
       open={isSidebarOpen}
     >
-      <DrawerHeader>
-        <IconButton onClick={() => onSidebarToggle(false)}>
-          <ChevronLeft fontSize='large' />
-        </IconButton>
-      </DrawerHeader>
       <Divider />
       <List>
         {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (

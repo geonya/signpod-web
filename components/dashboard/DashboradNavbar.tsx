@@ -1,10 +1,10 @@
-import { Menu } from '@mui/icons-material'
+import { Close, Menu } from '@mui/icons-material'
 import { IconButton, styled, Toolbar, Typography } from '@mui/material'
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
-import { sidebarWidth } from './DashboardLayout'
+import { navBarHeight } from './DashboardLayout'
 
 interface DashboardNavbarProps {
-  onSidebarToggle: (opened: boolean) => void
+  onSidebarToggle: () => void
   isSidebarOpen: boolean
 }
 
@@ -14,19 +14,7 @@ interface AppBarProps extends MuiAppBarProps {
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open }) => ({
-  transition: theme.transitions.create(['margin', 'width'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${sidebarWidth})`,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}))
+})<AppBarProps>(({ theme, open }) => ({}))
 
 export const DashboardNavbar = ({
   isSidebarOpen,
@@ -34,15 +22,15 @@ export const DashboardNavbar = ({
 }: DashboardNavbarProps) => {
   return (
     <AppBar position='fixed' open={isSidebarOpen}>
-      <Toolbar sx={{ minHeight: '4rem', left: 0, px: 2 }}>
+      <Toolbar sx={{ height: navBarHeight, left: 0, px: 2 }}>
         <IconButton
           color='inherit'
           aria-label='open sidebar'
-          onClick={() => onSidebarToggle(true)}
+          onClick={() => onSidebarToggle()}
           edge='start'
-          sx={{ mr: 2, ...(isSidebarOpen && { display: 'none' }) }}
+          sx={{ mr: 2 }}
         >
-          <Menu fontSize='small' />
+          {isSidebarOpen ? <Close /> : <Menu />}
         </IconButton>
         <Typography variant='h6' noWrap component='div'>
           SignPod
