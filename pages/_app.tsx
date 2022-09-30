@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import Loader from '../components/Loader'
 import { ApolloProvider } from '@apollo/client'
 import { GetServerSideProps } from 'next'
-import client from '../lib/apollo/client'
+import { AuthProvider } from '../lib/auth'
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return {
@@ -25,32 +25,26 @@ interface MyAppProps extends AppProps {
 
 function MyApp(props: MyAppProps) {
   const { Component, pageProps, emotionCache = clientSideEmotionCache } = props
-
   // hydration error fix
   const [mount, setMount] = useState(false)
   useEffect(() => {
     setMount(true)
   }, [])
-  if (!mount) return <Loader />
 
+  if (!mount) return <Loader />
   return (
-    <>
-      <ApolloProvider client={client}>
-        <CacheProvider value={emotionCache}>
-          <Head>
-            <title>signpod inc</title>
-            <meta
-              name='viewport'
-              content='initial-scale=1, width=device-width'
-            />
-          </Head>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Component {...pageProps} />
-          </ThemeProvider>
-        </CacheProvider>
-      </ApolloProvider>
-    </>
+    <AuthProvider>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <title>signpod inc</title>
+          <meta name='viewport' content='initial-scale=1, width=device-width' />
+        </Head>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </CacheProvider>
+    </AuthProvider>
   )
 }
 
