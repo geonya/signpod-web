@@ -13,7 +13,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>SignPod | Branding Signage Design</title>
+        <title>Main | signpod</title>
       </Head>
       <DashBoardLayout>
         <Container maxWidth='lg'>

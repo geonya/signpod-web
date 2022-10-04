@@ -25,26 +25,7 @@ export const useAuth = () => {
 export function AuthProvider({ children }: AuthProviderProps) {
   const auth = useProvideAuth()
   const router = useRouter()
-  useEffect(() => {
-    auth.getToken()
-    const isAuthenticated = auth.isLoggedIn()
-    if (isAuthenticated) {
-      if (
-        router.pathname.includes('login') ||
-        router.pathname.includes('register')
-      ) {
-        router.replace({ pathname: '/' })
-        return
-      }
-    } else {
-      if (
-        !router.pathname.includes('login') &&
-        !router.pathname.includes('register')
-      ) {
-        router.replace({ pathname: '/login' })
-      }
-    }
-  }, [router, auth])
+  useEffect(() => {}, [router, auth])
   return (
     <authContext.Provider value={auth}>
       <ApolloProvider client={auth.craeteApolloClient()}>
@@ -59,6 +40,7 @@ function useProvideAuth() {
 
   const isLoggedIn = () => {
     if (!token) return false
+
     try {
       const decoded = jwt.verify(token, process.env.NEXT_PUBLIC_PRIVATE_KEY!)
       if (typeof decoded === 'object' && decoded.hasOwnProperty('id')) {

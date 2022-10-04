@@ -33,7 +33,7 @@ export const DashboardSidebar = ({ isSidebarOpen }: DashboardSidebarProps) => {
     >
       <Divider />
       <List>
-        {['프로젝트 관리', '갤러리', '실시간 상담', '디자인'].map(
+        {['프로젝트 관리', '포트폴리오', '실시간 상담', '디자인'].map(
           (text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>

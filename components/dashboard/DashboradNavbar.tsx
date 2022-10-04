@@ -1,5 +1,12 @@
-import { Close, Menu, Search } from '@mui/icons-material'
 import {
+  Close,
+  Menu,
+  PersonOutline,
+  Search,
+  SupervisedUserCircle,
+} from '@mui/icons-material'
+import {
+  Avatar,
   Box,
   IconButton,
   styled,
@@ -29,7 +36,13 @@ export const DashboardNavbar = ({
 }: DashboardNavbarProps) => {
   return (
     <AppBar position='fixed' open={isSidebarOpen}>
-      <Toolbar sx={{ left: 0, px: 2, minHeight: navBarHeight }}>
+      <Toolbar
+        sx={{
+          left: 0,
+          px: 2,
+          minHeight: navBarHeight,
+        }}
+      >
         <IconButton
           color='inherit'
           aria-label='open sidebar'
@@ -48,6 +61,12 @@ export const DashboardNavbar = ({
             <Search />
           </IconButton>
         </Tooltip>
+        <Avatar
+          src={'/avatar.jpeg'}
+          sx={{ width: 30, height: 30, ml: 1, cursor: 'pointer' }}
+        >
+          <PersonOutline />
+        </Avatar>
       </Toolbar>
     </AppBar>
   )
