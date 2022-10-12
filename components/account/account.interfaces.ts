@@ -1,6 +1,6 @@
 export interface AccountProfileProps {
-  id: number
-  name: string
-  email: string
+  id?: number
+  name?: string
+  email?: string
   avatar?: string
 }

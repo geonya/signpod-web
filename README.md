@@ -10,3 +10,10 @@ _220926_
 - [x] 로그인 / 회원가입 page layout
 - [x] Account Profile Layout
 - [ ] Update Account
+- [ ] Google Cloud Deploy setup
+- [x] Project Gallery Layout
+- [ ] Project Pagination Design
+- [ ] Profile Modal
+- [ ] Chat Setup
+- [ ] SEO Setup
+- [ ] Domain Deploy

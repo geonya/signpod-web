@@ -1,6 +1,5 @@
 import { Inbox, Mail } from '@mui/icons-material'
 import {
-  Divider,
   Drawer,
   List,
   ListItem,
@@ -8,6 +7,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@mui/material'
+import { useRouter } from 'next/router'
 import { navBarHeight, sidebarWidth } from './DashboardLayout'
 
 interface DashboardSidebarProps {
@@ -15,6 +15,7 @@ interface DashboardSidebarProps {
 }
 
 export const DashboardSidebar = ({ isSidebarOpen }: DashboardSidebarProps) => {
+  const router = useRouter()
   return (
     <Drawer
       sx={{
@@ -31,20 +32,15 @@ export const DashboardSidebar = ({ isSidebarOpen }: DashboardSidebarProps) => {
       anchor='left'
       open={isSidebarOpen}
     >
-      <Divider />
       <List>
-        {['프로젝트 관리', '포트폴리오', '실시간 상담', '디자인'].map(
-          (text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <Inbox /> : <Mail />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ),
-        )}
+        <ListItem disablePadding onClick={() => router.push('/portfolio')}>
+          <ListItemButton>
+            <ListItemIcon>
+              <Inbox />
+            </ListItemIcon>
+            <ListItemText primary={'포트폴리오'} />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Drawer>
   )
