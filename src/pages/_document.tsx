@@ -1,16 +1,15 @@
+import { Children } from 'react'
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import createEmotionCache from '../utils/createEmotionCache'
 import createEmotionServer from '@emotion/server/create-instance'
-import { theme } from '../theme'
 
 export default class MyDocument extends Document {
   render() {
     return (
       <Html>
         <Head>
-          <meta name='theme-color' content={theme.palette.primary.main} />
+          <meta name='theme-color' content='#111827' />
           <meta name='description' content='signpod web application' />
-          <link rel='icon' href='/favicon.ico' />
           <link rel='preconnect' href='https://fonts.googleapis.com' />
           <link rel='preconnect' href='https://fonts.gstatic.com' />
           <link
@@ -39,7 +38,6 @@ export default class MyDocument extends Document {
             sizes='16x16'
             href='/favicon-16x16.png'
           />
-          <meta name='theme-color' content='#111827' />
         </Head>
         <body>
           <Main />
@@ -102,9 +100,8 @@ MyDocument.getInitialProps = async (ctx) => {
       dangerouslySetInnerHTML={{ __html: style.css }}
     />
   ))
-
   return {
     ...initialProps,
-    emotionStyleTags,
+    styles: [...Children.toArray(initialProps.styles), ...emotionStyleTags],
   }
 }

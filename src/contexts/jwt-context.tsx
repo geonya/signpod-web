@@ -1,3 +1,4 @@
+import { ApolloProvider } from '@apollo/client'
 import { createContext, type FC, ReactNode, useReducer, useEffect } from 'react'
 import { JWT_TOKEN } from '../constants'
 import {
@@ -220,6 +221,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
       }
     }
   }
+
   return (
     <AuthContext.Provider value={{ ...state, login, logout, register }}>
       {children}
