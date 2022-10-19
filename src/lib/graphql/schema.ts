@@ -13,6 +13,7 @@ gql`
     createAccount(input: $input) {
       ok
       error
+      token
     }
   }
 
@@ -37,8 +38,8 @@ gql`
     }
   }
 
-  query GetMe {
-    getMe {
+  query Me($input:MeInput!) {
+    me(input:$input) {
       ok
       error
       user {

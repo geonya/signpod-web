@@ -1,22 +1,32 @@
-FROM node:alpine
+# Install dependencies only when needed
+FROM node:lts-alpine AS deps
 
 WORKDIR /app
-
 COPY package.json package-lock.json ./
-RUN npm install 
+RUN npm ci
 
-COPY next.config.js ./next.config.js
-COPY tsconfig.json ./tsconfig.json
-COPY graphql.schema.json ./graphql.schema.json
-COPY constants.ts ./constants.ts
-COPY __mock__ ./__mock__
+# Rebuild the source code only when needed
+# This is where because may be the case that you would try
+# to build the app based on some `X_TAG` in my case (Git commit hash)
+# but the code hasn't changed.
+FROM node:lts-alpine AS builder
 
-COPY pages ./pages
-COPY public ./public
-COPY theme ./theme
-COPY lib ./lib
-COPY hooks ./hooks
-COPY components ./components
-COPY utils ./utils
+ENV NODE_ENV=production
+WORKDIR /app
+COPY . .
+COPY --from=deps /app/node_modules ./node_modules
+RUN npm run build
 
-CMD ["npm", "run", "dev"]
+# Production image, copy all the files and run next
+FROM node:lts-alpine AS runner
+
+ARG X_TAG
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=builder /app/next.config.js ./
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/node_modules ./node_modules
+CMD ["node_modules/.bin/next", "start"]
+
+EXPOSE 3000

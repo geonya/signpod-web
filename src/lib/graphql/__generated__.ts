@@ -26,6 +26,7 @@ export type CreateAccountOutput = {
   __typename?: 'CreateAccountOutput';
   error?: Maybe<Scalars['String']>;
   ok: Scalars['Boolean'];
+  token?: Maybe<Scalars['String']>;
 };
 
 export type EditAccountInput = {
@@ -70,6 +71,10 @@ export type LogoutOutput = {
   ok: Scalars['Boolean'];
 };
 
+export type MeInput = {
+  token?: InputMaybe<Scalars['String']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   createAccount: CreateAccountOutput;
@@ -95,13 +100,18 @@ export type MutationLoginArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  getMe: GetUserOutput;
   getUser: GetUserOutput;
+  me: GetUserOutput;
 };
 
 
 export type QueryGetUserArgs = {
   input: GetUserInput;
+};
+
+
+export type QueryMeArgs = {
+  input: MeInput;
 };
 
 export type User = {
@@ -121,7 +131,7 @@ export type CreateAccountMutationVariables = Exact<{
 }>;
 
 
-export type CreateAccountMutation = { __typename?: 'Mutation', createAccount: { __typename?: 'CreateAccountOutput', ok: boolean, error?: string | null } };
+export type CreateAccountMutation = { __typename?: 'Mutation', createAccount: { __typename?: 'CreateAccountOutput', ok: boolean, error?: string | null, token?: string | null } };
 
 export type LoginMutationVariables = Exact<{
   input: LoginInput;
@@ -142,10 +152,12 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 export type LogoutMutation = { __typename?: 'Mutation', logout: { __typename?: 'LogoutOutput', ok: boolean, error?: string | null } };
 
-export type GetMeQueryVariables = Exact<{ [key: string]: never; }>;
+export type MeQueryVariables = Exact<{
+  input: MeInput;
+}>;
 
 
-export type GetMeQuery = { __typename?: 'Query', getMe: { __typename?: 'GetUserOutput', ok: boolean, error?: string | null, user?: { __typename?: 'User', id: number, name: string, email: string } | null } };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'GetUserOutput', ok: boolean, error?: string | null, user?: { __typename?: 'User', id: number, name: string, email: string } | null } };
 
 export const UserFragmentFragmentDoc = gql`
     fragment UserFragment on User {
@@ -159,6 +171,7 @@ export const CreateAccountDocument = gql`
   createAccount(input: $input) {
     ok
     error
+    token
   }
 }
     `;
@@ -290,9 +303,9 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
-export const GetMeDocument = gql`
-    query GetMe {
-  getMe {
+export const MeDocument = gql`
+    query Me($input: MeInput!) {
+  me(input: $input) {
     ok
     error
     user {
@@ -303,28 +316,29 @@ export const GetMeDocument = gql`
     ${UserFragmentFragmentDoc}`;
 
 /**
- * __useGetMeQuery__
+ * __useMeQuery__
  *
- * To run a query within a React component, call `useGetMeQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetMeQuery({
+ * const { data, loading, error } = useMeQuery({
  *   variables: {
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useGetMeQuery(baseOptions?: Apollo.QueryHookOptions<GetMeQuery, GetMeQueryVariables>) {
+export function useMeQuery(baseOptions: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetMeQuery, GetMeQueryVariables>(GetMeDocument, options);
+        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
       }
-export function useGetMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMeQuery, GetMeQueryVariables>) {
+export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetMeQuery, GetMeQueryVariables>(GetMeDocument, options);
+          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, options);
         }
-export type GetMeQueryHookResult = ReturnType<typeof useGetMeQuery>;
-export type GetMeLazyQueryHookResult = ReturnType<typeof useGetMeLazyQuery>;
-export type GetMeQueryResult = Apollo.QueryResult<GetMeQuery, GetMeQueryVariables>;
+export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
+export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
+export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
