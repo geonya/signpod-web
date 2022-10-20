@@ -2,9 +2,12 @@ import { ArrowBack, Facebook, Google } from '@mui/icons-material'
 import {
   Box,
   Button,
+  Card,
   Container,
+  Divider,
   FormHelperText,
   Grid,
+  Link,
   TextField,
   Typography,
 } from '@mui/material'
@@ -14,14 +17,17 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import * as Yup from 'yup'
-import Link from '../components/Link'
 import { TEXT_SECONDARY } from '../constants'
-import { useAuth } from '../lib/auth'
+import { useAuth } from '../hooks/use-auth'
 import { useLoginMutation } from '../lib/graphql/__generated__'
+import NextLink from 'next/link'
+import { Logo } from '../components/logo'
+import { JwtLogin } from '../components/authentication/jwt-login'
 
 const Login: NextPage = () => {
   const auth = useAuth()
   const router = useRouter()
+  const { disableGuard } = router.query
   const [loginError, setLoginError] = useState('')
 
   const [login, { loading }] = useLoginMutation({
@@ -59,13 +65,96 @@ const Login: NextPage = () => {
       <Box
         component='main'
         sx={{
-          alignItems: 'center',
-          flexGrow: 1,
+          backgroundColor: 'background.default',
           display: 'flex',
-          minHeight: '100%',
+          flexDirection: 'column',
+          minHeight: '100vh',
         }}
       >
-        <Container maxWidth='sm'>
+        <Container
+          maxWidth='sm'
+          sx={{
+            py: {
+              xs: '60px',
+              md: '120px',
+            },
+          }}
+        >
+          <Box
+            sx={{
+              alignItems: 'center',
+              backgroundColor: (theme) =>
+                theme.palette.mode === 'dark' ? 'neutral.900' : 'neutral.100',
+              borderColor: 'divider',
+              borderRadius: 1,
+              borderStyle: 'solid',
+              borderWidth: 1,
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'space-between',
+              mb: 4,
+              p: 2,
+              '& > img': {
+                height: 32,
+                width: 'auto',
+                flexGrow: 0,
+                flexShrink: 0,
+              },
+            }}
+          >
+            <Card elevation={16} sx={{ p: 4 }}>
+              <Box
+                sx={{
+                  alignItems: 'center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}
+              >
+                <NextLink href='/' passHref>
+                  <a>
+                    <Logo
+                      sx={{
+                        height: 40,
+                        width: 40,
+                      }}
+                    />
+                  </a>
+                </NextLink>
+                <Typography variant='h4'>Log in</Typography>
+                <Typography
+                  color='textSecondary'
+                  sx={{ mt: 2 }}
+                  variant='body2'
+                >
+                  Sign in on signpod
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  mt: 3,
+                }}
+              >
+                <JwtLogin />
+              </Box>
+              <Divider sx={{ my: 3 }} />
+              <div>
+                <NextLink
+                  href={
+                    disableGuard
+                      ? `/authentication/register?disableGuard=${disableGuard}`
+                      : '/authentication/register'
+                  }
+                  passHref
+                >
+                  <Link color='textSecondary' variant='body2'>
+                    Create new account
+                  </Link>
+                </NextLink>
+              </div>
+            </Card>
+          </Box>
           <form onSubmit={formik.handleSubmit}>
             <Box sx={{ my: 3 }}>
               <Typography color='textPrimary' variant='h4'>

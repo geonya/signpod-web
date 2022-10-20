@@ -1,6 +1,28 @@
-import { BrowseGallery, Check } from '@mui/icons-material'
+import {
+  AttachMoney,
+  BrowseGallery,
+  CalendarViewMonth,
+  Chat,
+  Check,
+  Close,
+  ContentPaste,
+  CreditCard,
+  Drafts,
+  Home,
+  LocalPostOffice,
+  Lock,
+  Mail,
+  Newspaper,
+  Person,
+  ReceiptRounded,
+  Share,
+  ShoppingBag,
+  ShoppingCart,
+  SupervisedUserCircle,
+} from '@mui/icons-material'
 import {
   Box,
+  Chip,
   Divider,
   Drawer,
   Theme,
@@ -14,12 +36,12 @@ import { Scrollbar } from '../scrollbar'
 import NextLink from 'next/link'
 import { Logo } from '../logo'
 import { DashboardSidebarSection } from './dashboard-sidebar-section'
+import PropTypes from 'prop-types'
 
 interface DashboardSidebarProps {
-  onClose: () => void
+  onClose?: () => void
   open?: boolean
 }
-
 interface Item {
   title: string
   children?: Item[]
@@ -38,9 +60,251 @@ const getSections = (t: TFunction): Section[] => [
     title: t('General'),
     items: [
       {
-        title: t('포트폴리오'),
-        path: '/portfolio',
-        icon: <BrowseGallery fontSize='small' />,
+        title: t('Overview'),
+        path: '/dashboard',
+        icon: <Home fontSize='small' />,
+      },
+      {
+        title: t('Analytics'),
+        path: '/dashboard/analytics',
+        icon: <Home fontSize='small' />,
+      },
+      {
+        title: t('Finance'),
+        path: '/dashboard/finance',
+        icon: <Home fontSize='small' />,
+      },
+      {
+        title: t('Logistics'),
+        path: '/dashboard/logistics',
+        icon: <Home fontSize='small' />,
+        chip: (
+          <Chip
+            color='secondary'
+            label={
+              <Typography
+                sx={{
+                  fontSize: '10px',
+                  fontWeight: '600',
+                }}
+              >
+                NEW
+              </Typography>
+            }
+            size='small'
+          />
+        ),
+      },
+      {
+        title: t('Account'),
+        path: '/dashboard/account',
+        icon: <Person fontSize='small' />,
+      },
+    ],
+  },
+  {
+    title: t('Management'),
+    items: [
+      {
+        title: t('Customers'),
+        path: '/dashboard/customers',
+        icon: <Person fontSize='small' />,
+        children: [
+          {
+            title: t('List'),
+            path: '/dashboard/customers',
+          },
+          {
+            title: t('Details'),
+            path: '/dashboard/customers/1',
+          },
+          {
+            title: t('Edit'),
+            path: '/dashboard/customers/1/edit',
+          },
+        ],
+      },
+      {
+        title: t('Products'),
+        path: '/dashboard/products',
+        icon: <ShoppingBag fontSize='small' />,
+        children: [
+          {
+            title: t('List'),
+            path: '/dashboard/products',
+          },
+          {
+            title: t('Create'),
+            path: '/dashboard/products/new',
+          },
+        ],
+      },
+      {
+        title: t('Orders'),
+        icon: <ShoppingCart fontSize='small' />,
+        path: '/dashboard/orders',
+        children: [
+          {
+            title: t('List'),
+            path: '/dashboard/orders',
+          },
+          {
+            title: t('Details'),
+            path: '/dashboard/orders/1',
+          },
+        ],
+      },
+      {
+        title: t('Invoices'),
+        path: '/dashboard/invoices',
+        icon: <ReceiptRounded fontSize='small' />,
+        children: [
+          {
+            title: t('List'),
+            path: '/dashboard/invoices',
+          },
+          {
+            title: t('Details'),
+            path: '/dashboard/invoices/1',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: t('Platforms'),
+    items: [
+      {
+        title: t('Job Listings'),
+        path: '/dashboard/jobs',
+        icon: <LocalPostOffice fontSize='small' />,
+        children: [
+          {
+            title: t('Browse'),
+            path: '/dashboard/jobs',
+          },
+          {
+            title: t('Details'),
+            path: '/dashboard/jobs/companies/1',
+          },
+          {
+            title: t('Create'),
+            path: '/dashboard/jobs/new',
+          },
+        ],
+      },
+      {
+        title: t('Social Media'),
+        path: '/dashboard/social',
+        icon: <Share fontSize='small' />,
+        children: [
+          {
+            title: t('Profile'),
+            path: '/dashboard/social/profile',
+          },
+          {
+            title: t('Feed'),
+            path: '/dashboard/social/feed',
+          },
+        ],
+      },
+      {
+        title: t('Blog'),
+        path: '/blog',
+        icon: <Newspaper fontSize='small' />,
+        children: [
+          {
+            title: t('Post List'),
+            path: '/blog',
+          },
+          {
+            title: t('Post Details'),
+            path: '/blog/1',
+          },
+          {
+            title: t('Post Create'),
+            path: '/blog/new',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: t('Apps'),
+    items: [
+      {
+        title: t('Kanban'),
+        path: '/dashboard/kanban',
+        icon: <ContentPaste fontSize='small' />,
+      },
+      {
+        title: t('Mail'),
+        path: '/dashboard/mail',
+        icon: <Mail fontSize='small' />,
+      },
+      {
+        title: t('Chat'),
+        path: '/dashboard/chat',
+        icon: <Chat fontSize='small' />,
+      },
+      {
+        title: t('Calendar'),
+        path: '/dashboard/calendar',
+        icon: <CalendarViewMonth fontSize='small' />,
+      },
+    ],
+  },
+  {
+    title: t('Pages'),
+    items: [
+      {
+        title: t('Auth'),
+        path: '/authentication',
+        icon: <Lock fontSize='small' />,
+        children: [
+          {
+            title: t('Register'),
+            path: '/authentication/register?disableGuard=true',
+          },
+          {
+            title: t('Login'),
+            path: '/authentication/login?disableGuard=true',
+          },
+        ],
+      },
+      {
+        title: t('Pricing'),
+        path: '/dashboard/pricing',
+        icon: <CreditCard fontSize='small' />,
+      },
+      {
+        title: t('Checkout'),
+        path: '/checkout',
+        icon: <AttachMoney fontSize='small' />,
+      },
+      {
+        title: t('Contact'),
+        path: '/contact',
+        icon: <Drafts fontSize='small' />,
+      },
+      {
+        title: t('Error'),
+        path: '/error',
+        icon: <Close fontSize='small' />,
+        children: [
+          {
+            title: '401',
+            path: '/401',
+          },
+          {
+            title: '404',
+            path: '/404',
+          },
+          {
+            title: '500',
+            path: '/500',
+          },
+        ],
       },
     ],
   },
@@ -72,9 +336,6 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
       <Scrollbar
         sx={{
           height: '100%',
-          '& .simplebar-content': {
-            height: '100%',
-          },
         }}
       >
         <Box
@@ -201,4 +462,9 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
       {content}
     </Drawer>
   )
+}
+
+DashboardSidebar.propTypes = {
+  onClose: PropTypes.func,
+  open: PropTypes.bool,
 }

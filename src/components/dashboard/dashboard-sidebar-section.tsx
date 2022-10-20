@@ -1,22 +1,24 @@
-import { List } from '@mui/material'
-import type { FC } from 'react'
+import { List, type ListProps, ListSubheader } from '@mui/material'
+import type { FC, ReactNode } from 'react'
+import { DashboardSidebarItem } from './dashboard-sidebar-item'
+import PropTypes from 'prop-types'
 
 interface Item {
   path?: string
-  icon?: string
-  chip?: string
-  info?: string
+  icon?: ReactNode
+  chip?: ReactNode
+  info?: ReactNode
   children?: Item[]
   title: string
 }
 
-interface DashboardSidebarSectionProps {
+interface DashboardSidebarSectionProps extends ListProps {
   items: Item[]
   path: string
   title: string
 }
 
-interface RenderNavItemProps {
+interface RenderNavItemsProps {
   depth?: number
   items: Item[]
   path: string
@@ -38,14 +40,48 @@ const reduceChildRoutes = ({
   const key = `${item.title}-${depth}`
   const partialMatch = item.path ? path.includes(item.path) : false
   const exactMatch = path.split('?')[0] === item.path
+  if (item.children) {
+    acc.push(
+      <DashboardSidebarItem
+        active={partialMatch}
+        chip={item.chip}
+        depth={depth}
+        icon={item.icon}
+        info={item.info}
+        key={key}
+        open={partialMatch}
+        path={item.path}
+        title={item.title}
+      >
+        {renderNavItems({
+          depth: depth + 1,
+          items: item.children,
+          path,
+        })}
+      </DashboardSidebarItem>,
+    )
+  } else {
+    acc.push(
+      <DashboardSidebarItem
+        active={exactMatch}
+        chip={item.chip}
+        depth={depth}
+        icon={item.icon}
+        info={item.info}
+        key={key}
+        path={item.path}
+        title={item.title}
+      />,
+    )
+  }
   return acc
 }
 
-const renderNavItem = ({
+const renderNavItems = ({
   depth = 0,
   items,
   path,
-}: RenderNavItemProps): JSX.Element => (
+}: RenderNavItemsProps): JSX.Element => (
   <List disablePadding>
     {items.reduce(
       (acc: JSX.Element[], item) =>
@@ -61,5 +97,36 @@ export const DashboardSidebarSection: FC<DashboardSidebarSectionProps> = ({
   title,
   ...other
 }) => {
-  return <List></List>
+  return (
+    <List
+      subheader={
+        <ListSubheader
+          disableGutters
+          disableSticky
+          sx={{
+            color: 'neutral.500',
+            fontSize: '0.75rem',
+            fontWeight: 700,
+            lineHeight: 2.5,
+            ml: 4,
+            textTransform: 'uppercase',
+          }}
+        >
+          {title}
+        </ListSubheader>
+      }
+      {...other}
+    >
+      {renderNavItems({
+        items,
+        path,
+      })}
+    </List>
+  )
+}
+
+DashboardSidebarSection.propTypes = {
+  items: PropTypes.array.isRequired,
+  path: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
 }
