@@ -3,7 +3,6 @@ import { createContext, type FC, ReactNode, useReducer, useEffect } from 'react'
 import { JWT_TOKEN } from '../constants'
 import {
   useMeLazyQuery,
-  useLoginMutation,
   useCreateAccountMutation,
 } from '../lib/graphql/__generated__'
 
@@ -20,7 +19,7 @@ interface State {
 }
 
 export interface AuthContextValue extends State {
-  login: (email: string, password: string) => Promise<void>
+  login: (token?: string | null) => Promise<void>
   logout: () => Promise<void>
   register: (email: string, password: string, name: string) => Promise<void>
 }
@@ -119,7 +118,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const { children } = props
   const [state, dispatch] = useReducer(reducer, initialState)
   const [me] = useMeLazyQuery()
-  const [loginMutation] = useLoginMutation()
+
   const [registerMutation] = useCreateAccountMutation()
   useEffect(() => {
     const initialize = async (): Promise<void> => {
@@ -163,16 +162,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     initialize()
   }, [me])
 
-  const login = async (email: string, password: string): Promise<void> => {
-    const { data } = await loginMutation({
-      variables: {
-        input: {
-          email,
-          password,
-        },
-      },
-    })
-    const token = data?.login.token
+  const login = async (token?: string | null): Promise<void> => {
     if (token) {
       localStorage.setItem(JWT_TOKEN, token)
       const { data } = await me({ variables: { input: { token } } })

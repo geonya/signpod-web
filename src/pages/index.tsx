@@ -3,6 +3,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useEffect } from 'react'
 import { DashboardLayout } from '../components/dashboard/dashboard-layout'
+import { useAuth } from '../hooks/use-auth'
 import { gtm } from '../lib/gtm'
 
 const Home: NextPage = () => {

@@ -345,64 +345,31 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
             height: '100%',
           }}
         >
-          <div>
-            <NextLink href='/'>
-              <Box
+          <NextLink href='/'>
+            <Box
+              sx={{
+                p: 3,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <Logo
                 sx={{
-                  p: 3,
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
+                  height: 42,
+                  width: 42,
+                  mr: 2,
                 }}
-              >
-                <Logo
-                  sx={{
-                    height: 42,
-                    width: 42,
-                    mr: 2,
-                  }}
-                />
-                <Typography variant='h6' color='inherit'>
-                  signpod
-                </Typography>
-              </Box>
-            </NextLink>
-            <Box sx={{ px: 2 }}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  backgroundColor: 'rgba(255, 255, 255, 0.04)',
-                  cursor: 'pointer',
-                  px: 3,
-                  py: '11px',
-                  borderRadius: 1,
-                }}
-              >
-                <div>
-                  <Typography color='inherit' variant='subtitle1'>
-                    signpod inc
-                  </Typography>
-                  <Typography color='neutral.400' variant='body2'>
-                    {t('Plan')} : VIP
-                  </Typography>
-                </div>
-                <Check
-                  sx={{
-                    color: 'neutral.500',
-                    width: 14,
-                    height: 14,
-                  }}
-                />
-              </Box>
+              />
+              <Typography variant='h6' color='inherit'>
+                signpod
+              </Typography>
             </Box>
-          </div>
+          </NextLink>
         </Box>
         <Divider
           sx={{
             borderColor: '#2D3748', // dark divider
-            my: 3,
           }}
         />
         <Box sx={{ flexGrow: 1 }}>
@@ -419,6 +386,36 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
               {...section}
             />
           ))}
+        </Box>
+        <Box sx={{ px: 2 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              backgroundColor: 'rgba(255, 255, 255, 0.04)',
+              cursor: 'pointer',
+              px: 3,
+              py: '11px',
+              borderRadius: 1,
+            }}
+          >
+            <div>
+              <Typography color='inherit' variant='subtitle1'>
+                signpod inc
+              </Typography>
+              <Typography color='neutral.400' variant='body2'>
+                {t('Plan')} : VIP
+              </Typography>
+            </div>
+            <Check
+              sx={{
+                color: 'neutral.500',
+                width: 14,
+                height: 14,
+              }}
+            />
+          </Box>
         </Box>
       </Scrollbar>
     </>
