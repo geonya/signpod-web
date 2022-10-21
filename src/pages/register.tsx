@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { JwtRegister } from '../components/auth/jwt-register'
 import NextLink from 'next/link'
 import { Logo } from '../components/logo'
-import { GuestGuard } from '../components/auth/auth-guard'
+import { GuestGuard } from '../components/auth/guest-guard'
 
 const Register: NextPage = () => {
   return (

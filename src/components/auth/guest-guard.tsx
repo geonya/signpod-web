@@ -4,11 +4,11 @@ import { useRouter } from 'next/router'
 import PropTypes from 'prop-types'
 import { useAuth } from '../../hooks/use-auth'
 
-interface AuthGuardProps {
+interface GuestGuardProps {
   children: ReactNode
 }
 
-export const AuthGuard: FC<AuthGuardProps> = ({ children }) => {
+export const GuestGuard: FC<GuestGuardProps> = ({ children }) => {
   const auth = useAuth()
   const router = useRouter()
   const [checked, setChecked] = useState(false)
@@ -19,8 +19,8 @@ export const AuthGuard: FC<AuthGuardProps> = ({ children }) => {
         return
       }
       // You should remove the "disableGuard" check, because it's meant to be used only in the demo.
-      if (!auth.isAuthenticated) {
-        router.push('/login').catch(console.error)
+      if (auth.isAuthenticated) {
+        router.push('/').catch(console.error)
       } else {
         setChecked(true)
       }
@@ -39,6 +39,6 @@ export const AuthGuard: FC<AuthGuardProps> = ({ children }) => {
   return <>{children}</>
 }
 
-AuthGuard.propTypes = {
+GuestGuard.propTypes = {
   children: PropTypes.node,
 }

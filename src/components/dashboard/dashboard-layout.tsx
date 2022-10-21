@@ -3,6 +3,7 @@ import { FC, ReactNode, useState } from 'react'
 import PropTypes from 'prop-types'
 import { DashboardNavbar } from './dashboard-navbar'
 import { DashboardSidebar } from './dashboard-sidebar'
+import { SIDEBAR_WIDTH } from '../../constants'
 
 interface DashboardLayoutProps {
   children?: ReactNode
@@ -14,7 +15,7 @@ const DashboardLayoutRoot = styled('div')(({ theme }) => ({
   maxWidth: '100%',
   paddingTop: 64,
   [theme.breakpoints.up('lg')]: {
-    paddingLeft: 280,
+    paddingLeft: SIDEBAR_WIDTH,
   },
 }))
 

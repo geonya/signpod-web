@@ -7,3 +7,4 @@ export const displayFlex = { display: 'flex' }
 export const PRIMARY = 'primary'
 export const LARGE = 'large'
 export const CONTAINED = 'contained'
+export const SIDEBAR_WIDTH = 225

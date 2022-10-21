@@ -37,6 +37,7 @@ import NextLink from 'next/link'
 import { Logo } from '../logo'
 import { DashboardSidebarSection } from './dashboard-sidebar-section'
 import PropTypes from 'prop-types'
+import { SIDEBAR_WIDTH } from '../../constants'
 
 interface DashboardSidebarProps {
   onClose?: () => void
@@ -434,7 +435,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
             borderRightWidth: (theme) =>
               theme.palette.mode === 'dark' ? 1 : 0,
             color: '#FFFFFF',
-            width: 280,
+            width: SIDEBAR_WIDTH,
           },
         }}
         variant='permanent'
@@ -449,7 +450,11 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
       onClose={onClose}
       open={open}
       PaperProps={{
-        sx: { backgroundColor: 'neutral.900', color: '#FFFFFF', width: 280 },
+        sx: {
+          backgroundColor: 'neutral.900',
+          color: '#FFFFFF',
+          width: SIDEBAR_WIDTH,
+        },
       }}
       sx={{
         zIndex: (theme) => theme.zIndex.appBar + 100,

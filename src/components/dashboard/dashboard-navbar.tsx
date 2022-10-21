@@ -1,17 +1,28 @@
-import { AccountCircle, Menu } from '@mui/icons-material'
+import {
+  AccountCircle,
+  Menu,
+  Notifications,
+  Person,
+  Search,
+} from '@mui/icons-material'
 import {
   AppBar,
   AppBarProps,
   Avatar,
+  Badge,
   Box,
   ButtonBase,
   IconButton,
   styled,
   Toolbar,
+  Tooltip,
 } from '@mui/material'
 import { FC, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { AccountPopover } from './account-popover'
+import { SIDEBAR_WIDTH } from '../../constants'
+import { NotificationsPopover } from './notifications-popover'
+import { ContentSearchDialog } from './content-search-dialog'
 
 interface DashboardNavbarProps extends AppBarProps {
   onOpenSidebar?: () => void
@@ -34,6 +45,63 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = ({
   onOpenSidebar,
   ...other
 }) => {
+  const SearchButton = () => {
+    const [openDialog, setOpenDialog] = useState(false)
+    const handleOpenSearchDialog = () => {
+      setOpenDialog(true)
+    }
+    const handleCloseSearchDialog = () => {
+      setOpenDialog(false)
+    }
+    return (
+      <>
+        <Tooltip title='Search'>
+          <IconButton onClick={handleOpenSearchDialog} sx={{ ml: 1 }}>
+            <Search fontSize='small' />
+          </IconButton>
+        </Tooltip>
+        <ContentSearchDialog
+          onClose={handleCloseSearchDialog}
+          open={openDialog}
+        />
+      </>
+    )
+  }
+  const NotiButton = () => {
+    const anchorRef = useRef<HTMLButtonElement | null>(null)
+    const [unread, setUnread] = useState(0)
+    const [openPopover, setOpenPopover] = useState(false)
+    const handleOpenPopover = (): void => {
+      setOpenPopover(true)
+    }
+    const handleClosePopover = (): void => {
+      setOpenPopover(false)
+    }
+    const handleUpdateUnread = (value: number): void => {
+      setUnread(value)
+    }
+    return (
+      <>
+        <Tooltip title='Notifications'>
+          <IconButton
+            ref={anchorRef}
+            sx={{ ml: 1 }}
+            onClick={handleOpenPopover}
+          >
+            <Badge color='error' variant='dot' badgeContent={unread}>
+              <Notifications fontSize='medium' />
+            </Badge>
+          </IconButton>
+        </Tooltip>
+        <NotificationsPopover
+          anchorEl={anchorRef.current}
+          onClose={handleClosePopover}
+          onUpdateUnread={handleUpdateUnread}
+          open={openPopover}
+        />
+      </>
+    )
+  }
   const AccountButton = () => {
     const anchorRef = useRef<HTMLButtonElement | null>(null)
     const [openPopover, setOpenPopover] = useState<boolean>(false)
@@ -69,9 +137,9 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = ({
               height: 40,
               width: 40,
             }}
-            src={user.avatar}
+            src={''}
           >
-            <AccountCircle fontSize='small' />
+            <Person />
           </Avatar>
         </Box>
         <AccountPopover
@@ -88,10 +156,10 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = ({
       <DashboardNavbarRoot
         sx={{
           left: {
-            lg: 280,
+            lg: SIDEBAR_WIDTH,
           },
           width: {
-            lg: 'calc(100% - 280px)',
+            lg: `calc(100% - ${SIDEBAR_WIDTH}px)`,
           },
         }}
         {...other}
@@ -116,6 +184,8 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = ({
             <Menu fontSize='small' />
           </IconButton>
           <Box sx={{ flexGrow: 1 }} />
+          <SearchButton />
+          <NotiButton />
           <AccountButton />
         </Toolbar>
       </DashboardNavbarRoot>

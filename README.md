@@ -9,9 +9,16 @@ _220926_
 - [x] Apollo Client setup
 - [x] 로그인 / 회원가입 page layout
 - [x] Account Profile Layout
-- [ ] Update Account
+- [x] Dashboard Layout
+  - [x] Sidebar Layout
+  - [x] Navbar Layout
+    - [x] Account
+    - [x] Noti
+    - [x] Search
+- [ ] Profile Layout
+- [ ] Edit Profile Page
 - [ ] Google Cloud Deploy setup
-- [x] Project Gallery Layout
+- [ ] Project Gallery Layout
 - [ ] Project Pagination Design
 - [ ] Profile Modal
 - [ ] Chat Setup
