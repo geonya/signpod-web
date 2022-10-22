@@ -1,6 +1,5 @@
 import {
   AttachMoney,
-  BrowseGallery,
   CalendarViewMonth,
   Chat,
   Check,
@@ -18,7 +17,6 @@ import {
   Share,
   ShoppingBag,
   ShoppingCart,
-  SupervisedUserCircle,
 } from '@mui/icons-material'
 import {
   Box,
@@ -33,8 +31,6 @@ import { useRouter } from 'next/router'
 import { FC, ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 import { type TFunction, useTranslation } from 'react-i18next'
 import { Scrollbar } from '../scrollbar'
-import NextLink from 'next/link'
-import { Logo } from '../logo'
 import { DashboardSidebarSection } from './dashboard-sidebar-section'
 import PropTypes from 'prop-types'
 import { SIDEBAR_WIDTH } from '../../constants'
@@ -61,23 +57,23 @@ const getSections = (t: TFunction): Section[] => [
     title: t('General'),
     items: [
       {
-        title: t('Overview'),
-        path: '/dashboard',
+        title: t('포트폴리오'),
+        path: '/works',
         icon: <Home fontSize='small' />,
       },
       {
-        title: t('Analytics'),
-        path: '/dashboard/analytics',
+        title: t('견적서'),
+        path: '/estimates',
         icon: <Home fontSize='small' />,
       },
       {
-        title: t('Finance'),
-        path: '/dashboard/finance',
+        title: t('제작 문의'),
+        path: '/contact',
         icon: <Home fontSize='small' />,
       },
       {
         title: t('Logistics'),
-        path: '/dashboard/logistics',
+        path: '/logistics',
         icon: <Home fontSize='small' />,
         chip: (
           <Chip
@@ -98,7 +94,7 @@ const getSections = (t: TFunction): Section[] => [
       },
       {
         title: t('Account'),
-        path: '/dashboard/account',
+        path: '/account',
         icon: <Person fontSize='small' />,
       },
     ],
@@ -108,65 +104,65 @@ const getSections = (t: TFunction): Section[] => [
     items: [
       {
         title: t('Customers'),
-        path: '/dashboard/customers',
+        path: '/customers',
         icon: <Person fontSize='small' />,
         children: [
           {
             title: t('List'),
-            path: '/dashboard/customers',
+            path: '/customers',
           },
           {
             title: t('Details'),
-            path: '/dashboard/customers/1',
+            path: '/customers/1',
           },
           {
             title: t('Edit'),
-            path: '/dashboard/customers/1/edit',
+            path: '/customers/1/edit',
           },
         ],
       },
       {
         title: t('Products'),
-        path: '/dashboard/products',
+        path: '/products',
         icon: <ShoppingBag fontSize='small' />,
         children: [
           {
             title: t('List'),
-            path: '/dashboard/products',
+            path: '/products',
           },
           {
             title: t('Create'),
-            path: '/dashboard/products/new',
+            path: '/products/new',
           },
         ],
       },
       {
         title: t('Orders'),
         icon: <ShoppingCart fontSize='small' />,
-        path: '/dashboard/orders',
+        path: '/orders',
         children: [
           {
             title: t('List'),
-            path: '/dashboard/orders',
+            path: '/orders',
           },
           {
             title: t('Details'),
-            path: '/dashboard/orders/1',
+            path: '/orders/1',
           },
         ],
       },
       {
         title: t('Invoices'),
-        path: '/dashboard/invoices',
+        path: '/invoices',
         icon: <ReceiptRounded fontSize='small' />,
         children: [
           {
             title: t('List'),
-            path: '/dashboard/invoices',
+            path: '/invoices',
           },
           {
             title: t('Details'),
-            path: '/dashboard/invoices/1',
+            path: '/invoices/1',
           },
         ],
       },
@@ -177,35 +173,35 @@ const getSections = (t: TFunction): Section[] => [
     items: [
       {
         title: t('Job Listings'),
-        path: '/dashboard/jobs',
+        path: '/jobs',
         icon: <LocalPostOffice fontSize='small' />,
         children: [
           {
             title: t('Browse'),
-            path: '/dashboard/jobs',
+            path: '/jobs',
           },
           {
             title: t('Details'),
-            path: '/dashboard/jobs/companies/1',
+            path: '/jobs/companies/1',
           },
           {
             title: t('Create'),
-            path: '/dashboard/jobs/new',
+            path: '/jobs/new',
           },
         ],
       },
       {
         title: t('Social Media'),
-        path: '/dashboard/social',
+        path: '/social',
         icon: <Share fontSize='small' />,
         children: [
           {
             title: t('Profile'),
-            path: '/dashboard/social/profile',
+            path: '/social/profile',
           },
           {
             title: t('Feed'),
-            path: '/dashboard/social/feed',
+            path: '/social/feed',
           },
         ],
       },
@@ -235,22 +231,22 @@ const getSections = (t: TFunction): Section[] => [
     items: [
       {
         title: t('Kanban'),
-        path: '/dashboard/kanban',
+        path: '/kanban',
         icon: <ContentPaste fontSize='small' />,
       },
       {
         title: t('Mail'),
-        path: '/dashboard/mail',
+        path: '/mail',
         icon: <Mail fontSize='small' />,
       },
       {
         title: t('Chat'),
-        path: '/dashboard/chat',
+        path: '/chat',
         icon: <Chat fontSize='small' />,
       },
       {
         title: t('Calendar'),
-        path: '/dashboard/calendar',
+        path: '/calendar',
         icon: <CalendarViewMonth fontSize='small' />,
       },
     ],
@@ -275,7 +271,7 @@ const getSections = (t: TFunction): Section[] => [
       },
       {
         title: t('Pricing'),
-        path: '/dashboard/pricing',
+        path: '/pricing',
         icon: <CreditCard fontSize='small' />,
       },
       {
@@ -339,40 +335,6 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
           height: '100%',
         }}
       >
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100%',
-          }}
-        >
-          <NextLink href='/'>
-            <Box
-              sx={{
-                p: 3,
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <Logo
-                sx={{
-                  height: 42,
-                  width: 42,
-                  mr: 2,
-                }}
-              />
-              <Typography variant='h6' color='inherit'>
-                signpod
-              </Typography>
-            </Box>
-          </NextLink>
-        </Box>
-        <Divider
-          sx={{
-            borderColor: '#2D3748', // dark divider
-          }}
-        />
         <Box sx={{ flexGrow: 1 }}>
           {sections.map((section) => (
             <DashboardSidebarSection
@@ -394,7 +356,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              backgroundColor: 'rgba(255, 255, 255, 0.04)',
+              backgroundColor: 'rgba(0, 0, 0, 0.04)',
               cursor: 'pointer',
               px: 3,
               py: '11px',
@@ -429,12 +391,10 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
         onClose={onClose}
         PaperProps={{
           sx: {
-            backgroundColor: 'neutral.900',
             borderRightColor: 'divider',
             borderRightStyle: 'solid',
             borderRightWidth: (theme) =>
               theme.palette.mode === 'dark' ? 1 : 0,
-            color: '#FFFFFF',
             width: SIDEBAR_WIDTH,
           },
         }}
@@ -451,8 +411,6 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
       open={open}
       PaperProps={{
         sx: {
-          backgroundColor: 'neutral.900',
-          color: '#FFFFFF',
           width: SIDEBAR_WIDTH,
         },
       }}

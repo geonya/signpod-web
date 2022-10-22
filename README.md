@@ -7,7 +7,7 @@ _220926_
 - [x] NextJS Init
 - [x] Material UI Init
 - [x] Apollo Client setup
-- [x] 로그인 / 회원가입 page layout
+- [x] 로그인 / 회원가입 페이지
 - [x] Account Profile Layout
 - [x] Dashboard Layout
   - [x] Sidebar Layout
@@ -15,6 +15,9 @@ _220926_
     - [x] Account
     - [x] Noti
     - [x] Search
+- Works Page
+  - [ ] Upload / Export
+  - [ ]
 - [ ] Profile Layout
 - [ ] Edit Profile Page
 - [ ] Google Cloud Deploy setup

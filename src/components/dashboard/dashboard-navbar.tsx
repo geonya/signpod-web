@@ -1,10 +1,4 @@
-import {
-  AccountCircle,
-  Menu,
-  Notifications,
-  Person,
-  Search,
-} from '@mui/icons-material'
+import { Menu, Notifications, Person } from '@mui/icons-material'
 import {
   AppBar,
   AppBarProps,
@@ -16,13 +10,16 @@ import {
   styled,
   Toolbar,
   Tooltip,
+  Typography,
 } from '@mui/material'
 import { FC, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { AccountPopover } from './account-popover'
 import { SIDEBAR_WIDTH } from '../../constants'
 import { NotificationsPopover } from './notifications-popover'
-import { ContentSearchDialog } from './content-search-dialog'
+import { SearchInput } from './search-input'
+import NextLink from 'next/link'
+import { Logo } from '../logo'
 
 interface DashboardNavbarProps extends AppBarProps {
   onOpenSidebar?: () => void
@@ -45,28 +42,6 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = ({
   onOpenSidebar,
   ...other
 }) => {
-  const SearchButton = () => {
-    const [openDialog, setOpenDialog] = useState(false)
-    const handleOpenSearchDialog = () => {
-      setOpenDialog(true)
-    }
-    const handleCloseSearchDialog = () => {
-      setOpenDialog(false)
-    }
-    return (
-      <>
-        <Tooltip title='Search'>
-          <IconButton onClick={handleOpenSearchDialog} sx={{ ml: 1 }}>
-            <Search fontSize='small' />
-          </IconButton>
-        </Tooltip>
-        <ContentSearchDialog
-          onClose={handleCloseSearchDialog}
-          open={openDialog}
-        />
-      </>
-    )
-  }
   const NotiButton = () => {
     const anchorRef = useRef<HTMLButtonElement | null>(null)
     const [unread, setUnread] = useState(0)
@@ -137,7 +112,7 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = ({
               height: 40,
               width: 40,
             }}
-            src={''}
+            src={user.avatar}
           >
             <Person />
           </Avatar>
@@ -183,8 +158,37 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = ({
           >
             <Menu fontSize='small' />
           </IconButton>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100%',
+            }}
+          >
+            <NextLink href='/'>
+              <Box
+                sx={{
+                  px: 3,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <Logo
+                  sx={{
+                    height: 42,
+                    width: 42,
+                    mr: 2,
+                  }}
+                />
+                <Typography variant='h5' color='neutral.500'>
+                  signpod
+                </Typography>
+              </Box>
+            </NextLink>
+          </Box>
+          <SearchInput />
           <Box sx={{ flexGrow: 1 }} />
-          <SearchButton />
           <NotiButton />
           <AccountButton />
         </Toolbar>

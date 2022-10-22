@@ -1,11 +1,8 @@
-import { Box, Container, Grid, Typography } from '@mui/material'
+import { Box } from '@mui/material'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useEffect } from 'react'
+
 import { DashboardLayout } from '../components/dashboard/dashboard-layout'
-import { GridList1 } from '../components/gallery/gird-list-1'
-import { useAuth } from '../hooks/use-auth'
-import { gtm } from '../lib/gtm'
 
 const Home: NextPage = () => {
   // useEffect(() => {
@@ -16,9 +13,7 @@ const Home: NextPage = () => {
       <Head>
         <title>Main | signpod</title>
       </Head>
-      <Container disableGutters>
-        <GridList1 />
-      </Container>
+      <Box></Box>
     </>
   )
 }

@@ -21,19 +21,19 @@ const background = {
 
 const divider = '#2D3748'
 
-const primary = {
-  main: '#7582EB',
-  light: '#909BEF',
-  dark: '#515BA4',
-  contrastText: neutral[900],
-}
+// const primary = {
+//   main: '#7582EB',
+//   light: '#909BEF',
+//   dark: '#515BA4',
+//   contrastText: neutral[900],
+// }
 
-const secondary = {
-  main: '#10B981',
-  light: '#3FC79A',
-  dark: '#0B815A',
-  contrastText: neutral[900],
-}
+// const secondary = {
+//   main: '#10B981',
+//   light: '#3FC79A',
+//   dark: '#0B815A',
+//   contrastText: neutral[900],
+// }
 
 const success = {
   main: '#14B8A6',
@@ -74,7 +74,7 @@ export const darkThemeOptions: ThemeOptions = {
     MuiAvatar: {
       styleOverrides: {
         root: {
-          backgroundColor: neutral[500],
+          backgroundColor: neutral[300],
           color: '#FFFFFF',
         },
       },
@@ -175,8 +175,8 @@ export const darkThemeOptions: ThemeOptions = {
     info,
     mode: 'dark',
     neutral,
-    primary,
-    secondary,
+    // primary,
+    // secondary,
     success,
     text,
     warning,

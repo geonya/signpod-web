@@ -134,15 +134,14 @@ const BlogPostCardMediaWrapper = styled('div')({
   position: 'relative',
 })
 
-export const GridList1: FC = () => (
+export const WorkGridList: FC = () => (
   <Box
     sx={{
-      backgroundColor: 'background.default',
       minHeight: '100%',
       p: 3,
     }}
   >
-    <Grid container spacing={3}>
+    <Grid container spacing={2}>
       {posts.map((post) => (
         <Grid item key={post.id} md={3} sm={6} xs={12}>
           <Card
@@ -159,33 +158,12 @@ export const GridList1: FC = () => (
                   position: 'absolute',
                   top: 0,
                   width: '100%',
+                  cursor: 'pointer',
                 }}
               />
             </BlogPostCardMediaWrapper>
-            <Box sx={{ mt: 2 }}>
-              <div>
-                <Chip label={post.category} variant='outlined' />
-              </div>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  my: 2,
-                }}
-              >
-                <Avatar src={post.author.avatar} />
-                <Box sx={{ ml: 2 }}>
-                  <Typography variant='subtitle2'>
-                    {post.author.name}
-                  </Typography>
-                  <Typography color='textSecondary' variant='caption'>
-                    {`${format(post.publishedAt, 'dd MMM')} · ${
-                      post.readTime
-                    } read`}
-                  </Typography>
-                </Box>
-              </Box>
-              <Link variant='h5'>{post.title}</Link>
+            <Box sx={{ mt: 2, cursor: 'pointer' }}>
+              <Link variant='h6'>{post.title}</Link>
               <Typography
                 color='textSecondary'
                 sx={{
@@ -196,7 +174,7 @@ export const GridList1: FC = () => (
                   WebkitBoxOrient: 'vertical',
                   WebkitLineClamp: 2,
                 }}
-                variant='body1'
+                variant='body2'
               >
                 {post.shortDescription}
               </Typography>
