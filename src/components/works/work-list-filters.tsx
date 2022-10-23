@@ -1,9 +1,10 @@
 import { Search } from '@mui/icons-material'
-import { Box } from '@mui/material'
+import { Box, Chip, Divider, Input, Typography } from '@mui/material'
 import { ChangeEvent, FC, KeyboardEvent, useMemo, useState } from 'react'
 import { useUpdateEffect } from '../../hooks/use-update-effect'
+import { MultiSelect } from '../multi-select'
 
-interface WorkFilters {
+export interface WorkFilters {
   name?: string
   category: string[]
   status: string[]
@@ -195,15 +196,81 @@ export const WorkListFilters: FC<WorkListFiltersProps> = ({
 
   return (
     <div {...other}>
+      <Box sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
+        <Search fontSize='small' />
+        <Input
+          disableUnderline
+          fullWidth
+          onChange={handleQueryChange}
+          onKeyUp={handleQueryKeyup}
+          placeholder='검색하기'
+          value={queryValue}
+          sx={{ ml: 3 }}
+        />
+      </Box>
+      <Divider />
+      {filterItems.length > 0 ? (
+        <Box
+          sx={{
+            alignItems: 'center',
+            display: 'flex',
+            flexWrap: 'wrap',
+            p: 2,
+          }}
+        >
+          {filterItems.map((filterItem, i) => (
+            <Chip
+              key={i}
+              label={
+                <Box
+                  sx={{
+                    alignItems: 'center',
+                    display: 'flex',
+                    '& span': {
+                      fontWeight: 600,
+                    },
+                  }}
+                >
+                  <>
+                    <span>{filterItem.label}</span>:{' '}
+                    {filterItem.displayValue || filterItem.value}
+                  </>
+                </Box>
+              }
+              onDelete={(): void => handleDelete(filterItem)}
+              sx={{ m: 1 }}
+              variant='outlined'
+            />
+          ))}
+        </Box>
+      ) : (
+        <Box sx={{ p: 3 }}>
+          <Typography color='textSecondary' variant='subtitle2'>
+            적용된 필터가 없습니다.
+          </Typography>
+        </Box>
+      )}
+      <Divider />
       <Box
         sx={{
           alignItems: 'center',
           display: 'flex',
-          p: 2,
+          flexWrap: 'wrap',
+          p: 1,
         }}
       >
-        <Search fontSize='small' />
-        <Box sx={{ flexGrow: 1, ml: 3 }} />
+        <MultiSelect
+          label='Category'
+          onChange={handleCategoryChange}
+          options={categoryOptions}
+          value={categoryValues}
+        />
+        <MultiSelect
+          label='Status'
+          onChange={handleStatusChange}
+          options={statusOptions}
+          value={statusValues}
+        />
       </Box>
     </div>
   )

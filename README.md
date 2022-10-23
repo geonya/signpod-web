@@ -16,7 +16,7 @@ _220926_
     - [x] Noti
     - [x] Search
 - Works Page
-  - [ ] Upload / Export
+  - [ ] 카테고리 필터
   - [ ]
 - [ ] Profile Layout
 - [ ] Edit Profile Page
