@@ -109,8 +109,8 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = ({
         >
           <Avatar
             sx={{
-              height: 40,
-              width: 40,
+              height: 30,
+              width: 30,
             }}
             src={user.avatar}
           >
@@ -176,19 +176,19 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = ({
               >
                 <Logo
                   sx={{
-                    height: 42,
-                    width: 42,
+                    height: 30,
+                    width: 30,
                     mr: 2,
                   }}
                 />
-                <Typography variant='h5' color='neutral.500'>
+                <Typography variant='h6' color='neutral.500'>
                   signpod
                 </Typography>
               </Box>
             </NextLink>
           </Box>
-          <SearchInput />
           <Box sx={{ flexGrow: 1 }} />
+          <SearchInput />
           <NotiButton />
           <AccountButton />
         </Toolbar>

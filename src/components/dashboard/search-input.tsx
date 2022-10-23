@@ -58,19 +58,5 @@ export const SearchInput: FC = () => {
       console.log(value)
     },
   })
-  return (
-    <SearchBox onSubmit={formik.handleSubmit}>
-      <SearchIconWrapper>
-        <Search color='primary' />
-      </SearchIconWrapper>
-      <StyledInputBase
-        type='text'
-        name='keyword'
-        placeholder='Search…'
-        onBlur={formik.handleBlur}
-        onChange={formik.handleChange}
-        value={formik.values.keyword}
-      />
-    </SearchBox>
-  )
+  return <Search color='primary' />
 }
