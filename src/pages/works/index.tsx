@@ -1,8 +1,10 @@
-import { Box, Card, Container } from '@mui/material'
+import { Add, PlusOne } from '@mui/icons-material'
+import { Box, Button, Card, Container, Grid, Typography } from '@mui/material'
 import { type NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
 import { DashboardLayout } from '../../components/dashboard/dashboard-layout'
+import MyLink from '../../components/link'
 import { WorkGridList } from '../../components/works/work-grid-list'
 import {
   WorkFilters,
@@ -33,10 +35,30 @@ const Works: NextPage = () => {
         component='main'
         sx={{
           flexGrow: 1,
-          py: 8,
+          py: 5,
         }}
       >
         <Container maxWidth='xl'>
+          <Box sx={{ mb: 4 }}>
+            <Grid container justifyContent='space-between' spacing={3}>
+              <Grid item>
+                <Typography variant='h4' color='neutral.600'>
+                  Works
+                </Typography>
+              </Grid>
+              <Grid item>
+                <MyLink href='/works/new' passHref>
+                  <Button
+                    component='a'
+                    startIcon={<Add fontSize='small' />}
+                    variant='contained'
+                  >
+                    업로드
+                  </Button>
+                </MyLink>
+              </Grid>
+            </Grid>
+          </Box>
           <Card>
             <WorkListFilters onChange={handleFiltersChange} />
             <WorkGridList />

@@ -54,7 +54,7 @@ interface Section {
 
 const getSections = (t: TFunction): Section[] => [
   {
-    title: t('General'),
+    title: t('Signage'),
     items: [
       {
         title: t('포트폴리오'),

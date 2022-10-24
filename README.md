@@ -16,8 +16,10 @@ _220926_
     - [x] Noti
     - [x] Search
 - Works Page
-  - [ ] 카테고리 필터
-  - [ ]
+  - [x] 카테고리 필터 디자인
+  - [ ] Create Works 레이아웃 디자인
+  - [ ] Pagination
+  - [ ] 백엔드 연동
 - [ ] Profile Layout
 - [ ] Edit Profile Page
 - [ ] Google Cloud Deploy setup

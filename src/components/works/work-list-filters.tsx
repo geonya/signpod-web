@@ -260,13 +260,19 @@ export const WorkListFilters: FC<WorkListFiltersProps> = ({
         }}
       >
         <MultiSelect
-          label='Category'
+          label='업종'
           onChange={handleCategoryChange}
           options={categoryOptions}
           value={categoryValues}
         />
         <MultiSelect
-          label='Status'
+          label='소재'
+          onChange={handleCategoryChange}
+          options={categoryOptions}
+          value={categoryValues}
+        />
+        <MultiSelect
+          label='공개'
           onChange={handleStatusChange}
           options={statusOptions}
           value={statusValues}

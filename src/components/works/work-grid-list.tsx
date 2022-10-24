@@ -8,6 +8,8 @@ import {
   Chip,
   Grid,
   Link,
+  Pagination,
+  TablePagination,
   Typography,
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
@@ -183,5 +185,16 @@ export const WorkGridList: FC = () => (
         </Grid>
       ))}
     </Grid>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        flexGrow: 1,
+        py: 2,
+        mt: 2,
+      }}
+    >
+      <Pagination count={10} />
+    </Box>
   </Box>
 )
