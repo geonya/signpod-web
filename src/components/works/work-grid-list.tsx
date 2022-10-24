@@ -169,16 +169,14 @@ export const WorkGridList: FC = () => (
               <Typography
                 color='textSecondary'
                 sx={{
-                  height: 72,
                   mt: 1,
-                  overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   WebkitBoxOrient: 'vertical',
                   WebkitLineClamp: 2,
                 }}
                 variant='body2'
               >
-                {post.shortDescription}
+                {post.shortDescription.slice(0, 100)} ...
               </Typography>
             </Box>
           </Card>

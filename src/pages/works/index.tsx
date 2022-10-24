@@ -1,4 +1,4 @@
-import { Add, PlusOne } from '@mui/icons-material'
+import { Add } from '@mui/icons-material'
 import { Box, Button, Card, Container, Grid, Typography } from '@mui/material'
 import { type NextPage } from 'next'
 import Head from 'next/head'
