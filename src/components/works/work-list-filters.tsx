@@ -3,6 +3,7 @@ import { Box, Chip, Divider, Input, Typography } from '@mui/material'
 import { ChangeEvent, FC, KeyboardEvent, useMemo, useState } from 'react'
 import { useUpdateEffect } from '../../hooks/use-update-effect'
 import { MultiSelect } from '../multi-select'
+import { categoryOptions } from './work-category-options'
 
 export interface WorkFilters {
   name?: string
@@ -16,21 +17,6 @@ interface FilterItem {
   value: unknown
   displayValue?: unknown
 }
-
-const categoryOptions = [
-  {
-    label: '병/의원',
-    value: 'medical',
-  },
-  {
-    label: '기업/관공서',
-    value: 'company',
-  },
-  {
-    label: '카페/요식업',
-    value: 'food',
-  },
-]
 
 const statusOptions = [
   {

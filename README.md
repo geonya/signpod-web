@@ -18,8 +18,8 @@ _220926_
 - Works Page
   - [x] 카테고리 필터 디자인
   - [x] Create Works 레이아웃 디자인
-  - [ ] Pagination
   - [ ] 백엔드 연동
+  - [ ] Pagination
 - [ ] Profile Layout
 - [ ] Edit Profile Page
 - [ ] Google Cloud Deploy setup

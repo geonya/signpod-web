@@ -1,4 +1,4 @@
-import type { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import type { DropzoneOptions, FileWithPath } from 'react-dropzone'
 import { useDropzone } from 'react-dropzone'
@@ -9,58 +9,55 @@ import {
   Link,
   List,
   ListItem,
-  ListItemIcon,
   ListItemText,
   Tooltip,
   Typography,
 } from '@mui/material'
-import { Close, ContentCopy } from '@mui/icons-material'
+import { Close } from '@mui/icons-material'
 import { bytesToSize } from '../utils/bytes-to-size'
-
-export type File = FileWithPath
+import Image from 'next/image'
+import { DroppedFile } from './works/work-create-form'
 
 interface FileDropzoneProps extends DropzoneOptions {
-  files?: File[]
-  onRemove?: (file: File) => void
+  files?: DroppedFile[]
+  onRemove?: (file: DroppedFile) => void
   onRemoveAll?: () => void
   onUpload?: () => void
 }
 
-export const FileDropzone: FC<FileDropzoneProps> = (props) => {
-  const {
-    // Own props
-    files = [],
-    onRemove,
-    onRemoveAll,
-    onUpload,
-    // DropzoneOptions props
-    accept,
-    disabled,
-    getFilesFromEvent,
-    maxSize,
-    minSize,
-    multiple,
-    maxFiles,
-    onDragEnter,
-    onDragLeave,
-    onDragOver,
-    onDrop,
-    onDropAccepted,
-    onDropRejected,
-    onFileDialogCancel,
-    onFileDialogOpen,
-    useFsAccessApi,
-    autoFocus,
-    preventDropOnDocument,
-    noClick,
-    noKeyboard,
-    noDrag,
-    noDragEventsBubbling,
-    onError,
-    validator,
-    ...other
-  } = props
-
+export const FileDropzone: FC<FileDropzoneProps> = ({
+  // Own props
+  files = [],
+  onRemove,
+  onRemoveAll,
+  onUpload,
+  // DropzoneOptions props
+  accept,
+  disabled,
+  getFilesFromEvent,
+  maxSize,
+  minSize,
+  multiple,
+  maxFiles,
+  onDragEnter,
+  onDragLeave,
+  onDragOver,
+  onDrop,
+  onDropAccepted,
+  onDropRejected,
+  onFileDialogCancel,
+  onFileDialogOpen,
+  useFsAccessApi,
+  autoFocus,
+  preventDropOnDocument,
+  noClick,
+  noKeyboard,
+  noDrag,
+  noDragEventsBubbling,
+  onError,
+  validator,
+  ...other
+}) => {
   // We did not add the remaining props to avoid component complexity
   // but you can simply add it if you need to.
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -105,7 +102,12 @@ export const FileDropzone: FC<FileDropzoneProps> = (props) => {
             },
           }}
         >
-          <img alt='Select file' src='/static/add_file.svg' />
+          <Image
+            alt='Select file'
+            src='/static/add_file.svg'
+            width={90}
+            height={90}
+          />
         </Box>
         <Box sx={{ p: 2 }}>
           <Typography variant='h6'>{`파일 업로드`}</Typography>
@@ -119,9 +121,9 @@ export const FileDropzone: FC<FileDropzoneProps> = (props) => {
       {files.length > 0 && (
         <Box sx={{ mt: 2 }}>
           <List>
-            {files.map((file) => (
+            {files.map((file, i) => (
               <ListItem
-                key={file.path}
+                key={i}
                 sx={{
                   border: 1,
                   borderColor: 'divider',
@@ -131,19 +133,30 @@ export const FileDropzone: FC<FileDropzoneProps> = (props) => {
                   },
                 }}
               >
-                <ListItemIcon>
+                <Image
+                  src={file.url!}
+                  width={100}
+                  height={100}
+                  alt={file.file.path}
+                />
+                {/* <ListItemIcon>
                   <ContentCopy fontSize='small' />
-                </ListItemIcon>
+                </ListItemIcon> */}
                 <ListItemText
-                  primary={file.name}
+                  primary={file.file.name}
                   primaryTypographyProps={{
                     color: 'textPrimary',
                     variant: 'subtitle2',
                   }}
-                  secondary={bytesToSize(file.size)}
+                  secondary={bytesToSize(file.file.size)}
+                  secondaryTypographyProps={{
+                    variant: 'caption',
+                  }}
+                  sx={{ ml: 2 }}
                 />
+
                 <Tooltip title='Remove'>
-                  <IconButton edge='end' onClick={() => onRemove?.(file)}>
+                  <IconButton edge='end' onClick={() => onRemove!(file)}>
                     <Close fontSize='small' />
                   </IconButton>
                 </Tooltip>
@@ -160,7 +173,7 @@ export const FileDropzone: FC<FileDropzoneProps> = (props) => {
             <Button onClick={onRemoveAll} size='small' type='button'>
               모두 지우기
             </Button>
-            <Button
+            {/* <Button
               onClick={onUpload}
               size='small'
               sx={{ ml: 2 }}
@@ -168,7 +181,7 @@ export const FileDropzone: FC<FileDropzoneProps> = (props) => {
               variant='contained'
             >
               Upload
-            </Button>
+            </Button> */}
           </Box>
         </Box>
       )}

@@ -48,5 +48,13 @@ gql`
     }
     ${USER_FRAGMENT}
   }
+  
+
+  mutation CreateWork($input:CreateWorkInput!) {
+    createWork(input:$input) {
+      ok
+      error
+    }
+  }
 
 `

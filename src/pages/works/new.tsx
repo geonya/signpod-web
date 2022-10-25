@@ -7,8 +7,6 @@ import { DashboardLayout } from '../../components/dashboard/dashboard-layout'
 import { CreateWorkForm } from '../../components/works/work-create-form'
 
 const CreateWork: NextPage = () => {
-  useEffect(() => {}, [])
-
   return (
     <>
       <Head>

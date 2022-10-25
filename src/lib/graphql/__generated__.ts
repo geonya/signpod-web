@@ -14,6 +14,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   DateTime: any;
+  Upload: any;
 };
 
 export type CreateAccountInput = {
@@ -27,6 +28,19 @@ export type CreateAccountOutput = {
   error?: Maybe<Scalars['String']>;
   ok: Scalars['Boolean'];
   token?: Maybe<Scalars['String']>;
+};
+
+export type CreateWorkInput = {
+  cateogry: Scalars['String'];
+  description: Scalars['String'];
+  photos?: InputMaybe<Array<Scalars['Upload']>>;
+  title: Scalars['String'];
+};
+
+export type CreateWorkOutput = {
+  __typename?: 'CreateWorkOutput';
+  error?: Maybe<Scalars['String']>;
+  ok: Scalars['Boolean'];
 };
 
 export type EditAccountInput = {
@@ -78,6 +92,7 @@ export type MeInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   createAccount: CreateAccountOutput;
+  createWork: CreateWorkOutput;
   editAccount: EditAccountOutput;
   login: LoginOutput;
   logout: LogoutOutput;
@@ -89,6 +104,11 @@ export type MutationCreateAccountArgs = {
 };
 
 
+export type MutationCreateWorkArgs = {
+  input: CreateWorkInput;
+};
+
+
 export type MutationEditAccountArgs = {
   input: EditAccountInput;
 };
@@ -96,6 +116,15 @@ export type MutationEditAccountArgs = {
 
 export type MutationLoginArgs = {
   input: LoginInput;
+};
+
+export type Photo = {
+  __typename?: 'Photo';
+  alt?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  id: Scalars['Int'];
+  updatedAt: Scalars['DateTime'];
+  url: Scalars['String'];
 };
 
 export type Query = {
@@ -116,11 +145,24 @@ export type QueryMeArgs = {
 
 export type User = {
   __typename?: 'User';
+  avatar?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
   email: Scalars['String'];
   id: Scalars['Int'];
   name: Scalars['String'];
   password: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+  works?: Maybe<Array<Work>>;
+};
+
+export type Work = {
+  __typename?: 'Work';
+  createdAt: Scalars['DateTime'];
+  creator: User;
+  description?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  photos?: Maybe<Array<Photo>>;
+  title: Scalars['String'];
   updatedAt: Scalars['DateTime'];
 };
 
@@ -158,6 +200,13 @@ export type MeQueryVariables = Exact<{
 
 
 export type MeQuery = { __typename?: 'Query', me: { __typename?: 'GetUserOutput', ok: boolean, error?: string | null, user?: { __typename?: 'User', id: number, name: string, email: string } | null } };
+
+export type CreateWorkMutationVariables = Exact<{
+  input: CreateWorkInput;
+}>;
+
+
+export type CreateWorkMutation = { __typename?: 'Mutation', createWork: { __typename?: 'CreateWorkOutput', ok: boolean, error?: string | null } };
 
 export const UserFragmentFragmentDoc = gql`
     fragment UserFragment on User {
@@ -342,3 +391,37 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const CreateWorkDocument = gql`
+    mutation CreateWork($input: CreateWorkInput!) {
+  createWork(input: $input) {
+    ok
+    error
+  }
+}
+    `;
+export type CreateWorkMutationFn = Apollo.MutationFunction<CreateWorkMutation, CreateWorkMutationVariables>;
+
+/**
+ * __useCreateWorkMutation__
+ *
+ * To run a mutation, you first call `useCreateWorkMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateWorkMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createWorkMutation, { data, loading, error }] = useCreateWorkMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateWorkMutation(baseOptions?: Apollo.MutationHookOptions<CreateWorkMutation, CreateWorkMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateWorkMutation, CreateWorkMutationVariables>(CreateWorkDocument, options);
+      }
+export type CreateWorkMutationHookResult = ReturnType<typeof useCreateWorkMutation>;
+export type CreateWorkMutationResult = Apollo.MutationResult<CreateWorkMutation>;
+export type CreateWorkMutationOptions = Apollo.BaseMutationOptions<CreateWorkMutation, CreateWorkMutationVariables>;

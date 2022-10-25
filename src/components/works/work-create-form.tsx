@@ -11,62 +11,61 @@ import {
   CardContent,
   FormHelperText,
   Grid,
+  Input,
   MenuItem,
   TextField,
   Typography,
 } from '@mui/material'
 import { QuillEditor } from '../quill-editor'
-import { File, FileDropzone } from '../file-dropzone'
+import { FileDropzone } from '../file-dropzone'
+import { categoryOptions } from './work-category-options'
+import { useCreateWorkMutation } from '../../lib/graphql/__generated__'
+import { FileWithPath } from 'react-dropzone'
 
-const categoryOptions = [
-  {
-    label: 'Healthcare',
-    value: 'healthcare',
-  },
-  {
-    label: 'Makeup',
-    value: 'makeup',
-  },
-  {
-    label: 'Dress',
-    value: 'dress',
-  },
-  {
-    label: 'Skincare',
-    value: 'skincare',
-  },
-  {
-    label: 'Jewelry',
-    value: 'jewelry',
-  },
-  {
-    label: 'Blouse',
-    value: 'blouse',
-  },
-]
+export type File = FileWithPath
+
+export interface DroppedFile {
+  file: File
+  url?: string
+  alt?: string
+}
+
+interface PhotoUpload {
+  photo: File
+  alt?: string
+}
 
 export const CreateWorkForm: FC = (props) => {
   const router = useRouter()
-  const [files, setFiles] = useState<File[]>([])
+  const [photos, setPhotos] = useState<PhotoUpload[]>([])
+  const [droppedFiles, setDroppedFiles] = useState<DroppedFile[]>([])
+  const [createWorkMutation] = useCreateWorkMutation()
   const formik = useFormik({
     initialValues: {
       category: '',
       description: '',
-      images: [],
-      name: '',
+      title: '',
       submit: null,
     },
     validationSchema: Yup.object({
-      category: Yup.string().max(255),
+      title: Yup.string().max(255).required(),
+      category: Yup.string().required(),
       description: Yup.string().required(),
-      images: Yup.array(),
-      name: Yup.string().max(255).required(),
     }),
     onSubmit: async (values, helpers): Promise<void> => {
       try {
-        // NOTE: Make API request
+        await createWorkMutation({
+          variables: {
+            input: {
+              title: values.title,
+              description: values.description,
+              cateogry: values.category,
+              photos: [],
+            },
+          },
+        })
         toast.success('업로드 완료!')
-        router.push('/works').catch(console.error)
+        // router.push('/works').catch(console.error)
       } catch (error: any) {
         console.error(error)
         toast.error('Something went wrong!')
@@ -78,17 +77,27 @@ export const CreateWorkForm: FC = (props) => {
   })
 
   const handleDrop = (newFiles: File[]): void => {
-    setFiles((prevFiles) => [...prevFiles, ...newFiles])
+    const newDroppedFiles: DroppedFile[] = newFiles.map((file) => ({
+      file,
+      url: URL.createObjectURL(file),
+    }))
+    setDroppedFiles((prevFiles) => [...prevFiles, ...newDroppedFiles])
   }
 
-  const handleRemove = (file: File): void => {
-    setFiles((prevFiles) =>
-      prevFiles.filter((_file) => _file.path !== file.path),
+  const handleRemove = (droppedFile: DroppedFile): void => {
+    setDroppedFiles((prevFiles) =>
+      prevFiles.filter((prevDroppedFile) => {
+        URL.revokeObjectURL(prevDroppedFile.url as string)
+        return prevDroppedFile.file.path !== droppedFile.file.path
+      }),
     )
   }
 
   const handleRemoveAll = (): void => {
-    setFiles([])
+    droppedFiles.map((droppedFile) =>
+      URL.revokeObjectURL(droppedFile.url as string),
+    )
+    setDroppedFiles([])
   }
 
   return (
@@ -101,14 +110,14 @@ export const CreateWorkForm: FC = (props) => {
             </Grid>
             <Grid item md={10} xs={12}>
               <TextField
-                error={Boolean(formik.touched.name && formik.errors.name)}
+                error={Boolean(formik.touched.title && formik.errors.title)}
                 fullWidth
-                helperText={formik.touched.name && formik.errors.name}
+                helperText={formik.touched.title && formik.errors.title}
                 label='제목'
-                name='name'
+                name='title'
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
-                value={formik.values.name}
+                value={formik.values.title}
               />
               <Typography
                 color='textSecondary'
@@ -155,7 +164,7 @@ export const CreateWorkForm: FC = (props) => {
                 accept={{
                   'image/*': [],
                 }}
-                files={files}
+                files={droppedFiles}
                 onDrop={handleDrop}
                 onRemove={handleRemove}
                 onRemoveAll={handleRemoveAll}
