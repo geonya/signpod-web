@@ -33,7 +33,6 @@ export type CreateAccountOutput = {
 export type CreateWorkInput = {
   cateogry: Scalars['String'];
   description: Scalars['String'];
-  photos?: InputMaybe<Array<Scalars['Upload']>>;
   title: Scalars['String'];
 };
 
@@ -105,6 +104,7 @@ export type MutationCreateAccountArgs = {
 
 
 export type MutationCreateWorkArgs = {
+  files?: InputMaybe<Array<Scalars['Upload']>>;
   input: CreateWorkInput;
 };
 
@@ -203,6 +203,7 @@ export type MeQuery = { __typename?: 'Query', me: { __typename?: 'GetUserOutput'
 
 export type CreateWorkMutationVariables = Exact<{
   input: CreateWorkInput;
+  files: Array<Scalars['Upload']> | Scalars['Upload'];
 }>;
 
 
@@ -392,8 +393,8 @@ export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const CreateWorkDocument = gql`
-    mutation CreateWork($input: CreateWorkInput!) {
-  createWork(input: $input) {
+    mutation CreateWork($input: CreateWorkInput!, $files: [Upload!]!) {
+  createWork(input: $input, files: $files) {
     ok
     error
   }
@@ -415,6 +416,7 @@ export type CreateWorkMutationFn = Apollo.MutationFunction<CreateWorkMutation, C
  * const [createWorkMutation, { data, loading, error }] = useCreateWorkMutation({
  *   variables: {
  *      input: // value for 'input'
+ *      files: // value for 'files'
  *   },
  * });
  */

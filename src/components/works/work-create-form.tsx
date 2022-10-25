@@ -30,14 +30,9 @@ export interface DroppedFile {
   alt?: string
 }
 
-interface PhotoUpload {
-  photo: File
-  alt?: string
-}
-
 export const CreateWorkForm: FC = (props) => {
   const router = useRouter()
-  const [photos, setPhotos] = useState<PhotoUpload[]>([])
+
   const [droppedFiles, setDroppedFiles] = useState<DroppedFile[]>([])
   const [createWorkMutation] = useCreateWorkMutation()
   const formik = useFormik({
@@ -53,6 +48,7 @@ export const CreateWorkForm: FC = (props) => {
       description: Yup.string().required(),
     }),
     onSubmit: async (values, helpers): Promise<void> => {
+      const files: File[] = droppedFiles.map((droppedFile) => droppedFile.file)
       try {
         await createWorkMutation({
           variables: {
@@ -60,8 +56,8 @@ export const CreateWorkForm: FC = (props) => {
               title: values.title,
               description: values.description,
               cateogry: values.category,
-              photos: [],
             },
+            files,
           },
         })
         toast.success('업로드 완료!')

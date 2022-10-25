@@ -50,8 +50,8 @@ gql`
   }
   
 
-  mutation CreateWork($input:CreateWorkInput!) {
-    createWork(input:$input) {
+  mutation CreateWork($input:CreateWorkInput!, $files:[Upload!]!) {
+    createWork(input:$input, files:$files) {
       ok
       error
     }
