@@ -1,4 +1,3 @@
-import { ApolloProvider } from '@apollo/client'
 import { createContext, type FC, ReactNode, useReducer, useEffect } from 'react'
 import { JWT_TOKEN } from '../constants'
 import {
@@ -114,11 +113,9 @@ export const AuthContext = createContext<AuthContextValue>({
   register: () => Promise.resolve(),
 })
 
-export const AuthProvider: FC<AuthProviderProps> = (props) => {
-  const { children } = props
+export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [me] = useMeLazyQuery()
-
   const [registerMutation] = useCreateAccountMutation()
   useEffect(() => {
     const initialize = async (): Promise<void> => {

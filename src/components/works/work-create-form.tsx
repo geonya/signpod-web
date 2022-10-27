@@ -55,7 +55,7 @@ export const CreateWorkForm: FC = (props) => {
             input: {
               title: values.title,
               description: values.description,
-              cateogry: values.category,
+              category: values.category,
             },
             files,
           },

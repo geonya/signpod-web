@@ -31,7 +31,7 @@ export type CreateAccountOutput = {
 };
 
 export type CreateWorkInput = {
-  cateogry: Scalars['String'];
+  category: Scalars['String'];
   description: Scalars['String'];
   title: Scalars['String'];
 };
@@ -125,6 +125,7 @@ export type Photo = {
   id: Scalars['Int'];
   updatedAt: Scalars['DateTime'];
   url: Scalars['String'];
+  workId?: Maybe<Scalars['Int']>;
 };
 
 export type Query = {
@@ -157,11 +158,12 @@ export type User = {
 
 export type Work = {
   __typename?: 'Work';
+  category?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
   creator: User;
   description?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
-  photos?: Maybe<Array<Photo>>;
+  photos: Array<Photo>;
   title: Scalars['String'];
   updatedAt: Scalars['DateTime'];
 };

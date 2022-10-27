@@ -5,7 +5,7 @@ import { createUploadLink } from 'apollo-upload-client'
 const uploadHttpLink = createUploadLink({
   uri:
     process.env.NODE_ENV === 'production'
-      ? 'https://signpod-back-kmjnhjkr4a-du.a.run.app/graphql'
+      ? 'https://api.signpod.app/graphql'
       : 'http://localhost:4000/graphql',
   credentials: 'include',
 })

@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: signpod-web
+spec:
+  selector:
+    matchLabels:
+      app: signpod-web
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: signpod-web
+    spec:
+      containers:
+        - name: signpod-web
+          image: geonya/signpod-web
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
