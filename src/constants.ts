@@ -8,3 +8,5 @@ export const PRIMARY = 'primary'
 export const LARGE = 'large'
 export const CONTAINED = 'contained'
 export const SIDEBAR_WIDTH = 225
+export const ACCESS_TOKEN = 'ACCESS_TOKEN'
+export const REFRESH_TOKEN = 'REFRESH_TOKEN'

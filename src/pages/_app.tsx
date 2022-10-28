@@ -27,9 +27,11 @@ Router.events.on('routeChangeComplete', nProgress.done)
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
-const MyApp: FC<MyAppProps> = (props) => {
-  const { Component, pageProps, emotionCache = clientSideEmotionCache } = props
-
+const MyApp: FC<MyAppProps> = ({
+  Component,
+  pageProps,
+  emotionCache = clientSideEmotionCache,
+}) => {
   const getLayout = Component.getLayout ?? ((page) => page)
 
   // useEffect(() => {

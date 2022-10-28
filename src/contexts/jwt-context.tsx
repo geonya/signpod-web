@@ -1,5 +1,6 @@
+import Cookies from 'js-cookie'
 import { createContext, type FC, ReactNode, useReducer, useEffect } from 'react'
-import { JWT_TOKEN } from '../constants'
+import { ACCESS_TOKEN, JWT_TOKEN } from '../constants'
 import {
   useMeLazyQuery,
   useCreateAccountMutation,
@@ -120,7 +121,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     const initialize = async (): Promise<void> => {
       try {
-        const token = globalThis.localStorage.getItem(JWT_TOKEN)
+        const token = Cookies.get(ACCESS_TOKEN)
         if (token) {
           const { data } = await me({ variables: { input: { token } } })
           const user = data?.me.user

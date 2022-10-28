@@ -114,7 +114,26 @@ export const CreateWorkForm: FC = (props) => {
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
                 value={formik.values.title}
+                sx={{ mb: 3 }}
               />
+              <TextField
+                error={Boolean(
+                  formik.touched.category && formik.errors.category,
+                )}
+                fullWidth
+                label='업종'
+                name='category'
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                select
+                value={formik.values.category}
+              >
+                {categoryOptions.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
               <Typography
                 color='textSecondary'
                 sx={{
@@ -169,35 +188,7 @@ export const CreateWorkForm: FC = (props) => {
           </Grid>
         </CardContent>
       </Card>
-      <Card sx={{ mt: 3 }}>
-        <CardContent>
-          <Grid container spacing={3}>
-            <Grid item md={4} xs={12}>
-              <Typography variant='h6'>업종</Typography>
-            </Grid>
-            <Grid item md={8} xs={12}>
-              <TextField
-                error={Boolean(
-                  formik.touched.category && formik.errors.category,
-                )}
-                fullWidth
-                label='업종'
-                name='category'
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                select
-                value={formik.values.category}
-              >
-                {categoryOptions.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
+      <Card sx={{ mt: 3 }}></Card>
       <Box
         sx={{
           display: 'flex',
