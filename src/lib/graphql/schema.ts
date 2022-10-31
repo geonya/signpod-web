@@ -5,6 +5,9 @@ const USER_FRAGMENT = gql`
     id
     name
     email
+    avatar
+    createdAt
+    updatedAt
   }
 `
 
@@ -31,8 +34,8 @@ gql`
     }
   }
 
-  mutation Logout {
-    logout {
+  mutation Logout($input:LogoutInput!) {
+    logout(input:$input) {
       ok
       error
     }

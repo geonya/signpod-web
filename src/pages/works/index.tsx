@@ -10,6 +10,7 @@ import {
   WorkFilters,
   WorkListFilters,
 } from '../../components/works/work-list-filters'
+import { useAuth } from '../../hooks/use-auth'
 import { useMounted } from '../../hooks/use-mounted'
 import { Work } from '../../types/work'
 
@@ -25,6 +26,7 @@ const Works: NextPage = () => {
   })
 
   const handleFiltersChange = () => {}
+  const { isAuthenticated, user } = useAuth()
 
   return (
     <>
@@ -43,13 +45,12 @@ const Works: NextPage = () => {
             <Grid container justifyContent='space-between' spacing={3}>
               <Grid item>
                 <Typography variant='h4' color='neutral.600'>
-                  Works
+                  Works, {user ? user.email : 'guest'}
                 </Typography>
               </Grid>
               <Grid item>
                 <MyLink href='/works/new' passHref>
                   <Button
-                    component='a'
                     startIcon={<Add fontSize='small' />}
                     variant='contained'
                   >

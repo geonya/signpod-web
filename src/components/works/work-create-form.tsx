@@ -34,7 +34,11 @@ export const CreateWorkForm: FC = (props) => {
   const router = useRouter()
 
   const [droppedFiles, setDroppedFiles] = useState<DroppedFile[]>([])
-  const [createWorkMutation] = useCreateWorkMutation()
+  const [createWorkMutation] = useCreateWorkMutation({
+    onCompleted: () => {
+      // router.push('/works').catch(console.error)
+    },
+  })
   const formik = useFormik({
     initialValues: {
       category: '',
@@ -61,10 +65,9 @@ export const CreateWorkForm: FC = (props) => {
           },
         })
         toast.success('업로드 완료!')
-        // router.push('/works').catch(console.error)
       } catch (error: any) {
         console.error(error)
-        toast.error('Something went wrong!')
+        toast.error('에러 발생!')
         helpers.setStatus({ success: false })
         helpers.setErrors({ submit: error.message })
         helpers.setSubmitting(false)

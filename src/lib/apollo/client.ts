@@ -8,20 +8,15 @@ const uploadHttpLink = createUploadLink({
     process.env.NODE_ENV === 'production'
       ? 'https://api.signpod.app/graphql'
       : 'http://localhost:4000/graphql',
-  credentials:
-    process.env.NODE_ENV === 'production' ? 'same-origin' : 'include',
+  credentials: 'include',
 })
 
 const authLink = new ApolloLink((operation, forward) => {
   operation.setContext(({ headers }: { headers: any }) => {
-    let token: string | null = null
-    if (typeof window !== 'undefined') {
-      token = tokenVar()
-    }
     return {
       headers: {
         ...headers,
-        authorization: token,
+        authorization: tokenVar() || '',
       },
     }
   })

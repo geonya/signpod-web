@@ -1,9 +1,8 @@
-import type { AppProps } from 'next/app'
+import type { AppContext, AppProps } from 'next/app'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import Head from 'next/head'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import createEmotionCache from '../utils/createEmotionCache'
-import { FC } from 'react'
 import { Provider as ReduxProvider } from 'react-redux'
 import { store } from '../store'
 import { Toaster } from 'react-hot-toast'
@@ -15,8 +14,9 @@ import nProgress from 'nprogress'
 import { ApolloProvider } from '@apollo/client'
 import { client } from '../lib/apollo/client'
 import { createMyTheme } from '../theme'
+import { useEffect } from 'react'
 
-type MyAppProps = AppProps & {
+interface MyAppProps extends AppProps {
   Component: NextPage
   emotionCache?: EmotionCache
 }
@@ -27,13 +27,12 @@ Router.events.on('routeChangeComplete', nProgress.done)
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
-const MyApp: FC<MyAppProps> = ({
+const MyApp = ({
   Component,
   pageProps,
   emotionCache = clientSideEmotionCache,
-}) => {
+}: MyAppProps) => {
   const getLayout = Component.getLayout ?? ((page) => page)
-
   // useEffect(() => {
   //   gtm.initialize(gtmConfig)
   // }, [])

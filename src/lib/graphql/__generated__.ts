@@ -78,6 +78,10 @@ export type LoginOutput = {
   token?: Maybe<Scalars['String']>;
 };
 
+export type LogoutInput = {
+  id: Scalars['Int'];
+};
+
 export type LogoutOutput = {
   __typename?: 'LogoutOutput';
   error?: Maybe<Scalars['String']>;
@@ -118,6 +122,11 @@ export type MutationLoginArgs = {
   input: LoginInput;
 };
 
+
+export type MutationLogoutArgs = {
+  input: LogoutInput;
+};
+
 export type Photo = {
   __typename?: 'Photo';
   alt?: Maybe<Scalars['String']>;
@@ -152,6 +161,7 @@ export type User = {
   id: Scalars['Int'];
   name: Scalars['String'];
   password: Scalars['String'];
+  refreshToken?: Maybe<Scalars['String']>;
   updatedAt: Scalars['DateTime'];
   works?: Maybe<Array<Work>>;
 };
@@ -168,7 +178,7 @@ export type Work = {
   updatedAt: Scalars['DateTime'];
 };
 
-export type UserFragmentFragment = { __typename?: 'User', id: number, name: string, email: string };
+export type UserFragmentFragment = { __typename?: 'User', id: number, name: string, email: string, avatar?: string | null, createdAt: any, updatedAt: any };
 
 export type CreateAccountMutationVariables = Exact<{
   input: CreateAccountInput;
@@ -191,7 +201,9 @@ export type EditAccountMutationVariables = Exact<{
 
 export type EditAccountMutation = { __typename?: 'Mutation', editAccount: { __typename?: 'EditAccountOutput', ok: boolean, error?: string | null } };
 
-export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+export type LogoutMutationVariables = Exact<{
+  input: LogoutInput;
+}>;
 
 
 export type LogoutMutation = { __typename?: 'Mutation', logout: { __typename?: 'LogoutOutput', ok: boolean, error?: string | null } };
@@ -201,7 +213,7 @@ export type MeQueryVariables = Exact<{
 }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'GetUserOutput', ok: boolean, error?: string | null, user?: { __typename?: 'User', id: number, name: string, email: string } | null } };
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'GetUserOutput', ok: boolean, error?: string | null, user?: { __typename?: 'User', id: number, name: string, email: string, avatar?: string | null, createdAt: any, updatedAt: any } | null } };
 
 export type CreateWorkMutationVariables = Exact<{
   input: CreateWorkInput;
@@ -216,6 +228,9 @@ export const UserFragmentFragmentDoc = gql`
   id
   name
   email
+  avatar
+  createdAt
+  updatedAt
 }
     `;
 export const CreateAccountDocument = gql`
@@ -323,8 +338,8 @@ export type EditAccountMutationHookResult = ReturnType<typeof useEditAccountMuta
 export type EditAccountMutationResult = Apollo.MutationResult<EditAccountMutation>;
 export type EditAccountMutationOptions = Apollo.BaseMutationOptions<EditAccountMutation, EditAccountMutationVariables>;
 export const LogoutDocument = gql`
-    mutation Logout {
-  logout {
+    mutation Logout($input: LogoutInput!) {
+  logout(input: $input) {
     ok
     error
   }
@@ -345,6 +360,7 @@ export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMut
  * @example
  * const [logoutMutation, { data, loading, error }] = useLogoutMutation({
  *   variables: {
+ *      input: // value for 'input'
  *   },
  * });
  */

@@ -1,15 +1,17 @@
-import Cookies from 'js-cookie'
 import { createContext, type FC, ReactNode, useReducer, useEffect } from 'react'
-import { ACCESS_TOKEN, JWT_TOKEN } from '../constants'
+import { ACCESS_TOKEN } from '../constants'
+
 import {
   useMeLazyQuery,
   useCreateAccountMutation,
 } from '../lib/graphql/__generated__'
 
 type User = {
+  id: number
   email: string
   name: string
   password?: string
+  avatar?: string | null
 }
 
 interface State {
@@ -45,9 +47,7 @@ type InitializeAction = {
 
 type LoginAction = {
   type: ActionType.LOGIN
-  payload: {
-    user: User
-  }
+  payload: {}
 }
 
 type LogoutAction = {
@@ -56,9 +56,7 @@ type LogoutAction = {
 
 type RegisterAction = {
   type: ActionType.REGISTER
-  payload: {
-    user: User
-  }
+  payload: {}
 }
 
 type Action = InitializeAction | LoginAction | LogoutAction | RegisterAction
@@ -82,11 +80,9 @@ const handler: Record<ActionType, Handler> = {
     }
   },
   LOGIN: (state: State, action: LoginAction): State => {
-    const { user } = action.payload
     return {
       ...state,
       isAuthenticated: true,
-      user,
     }
   },
   LOGOUT: (state: State): State => ({
@@ -95,11 +91,9 @@ const handler: Record<ActionType, Handler> = {
     user: null,
   }),
   REGISTER: (state: State, action: RegisterAction): State => {
-    const { user } = action.payload
     return {
       ...state,
       isAuthenticated: true,
-      user,
     }
   },
 }
@@ -118,22 +112,39 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [me] = useMeLazyQuery()
   const [registerMutation] = useCreateAccountMutation()
+
   useEffect(() => {
     const initialize = async (): Promise<void> => {
+      let token: string | null = null
+      const cookies = document.cookie
+      if (cookies) {
+        const parseCookies = cookies.split(';')
+        const accessTokenCookie = parseCookies.filter(
+          (cookie) => cookie.split('=')[0] === ACCESS_TOKEN,
+        )[0]
+        if (accessTokenCookie) {
+          token = accessTokenCookie.split('=')[1]
+        }
+      }
       try {
-        const token = Cookies.get(ACCESS_TOKEN)
-        if (token) {
-          const { data } = await me({ variables: { input: { token } } })
+        dispatch({
+          type: ActionType.INITIALIZE,
+          payload: {
+            isAuthenticated: false,
+            user: null,
+          },
+        })
+        if (typeof token === 'string') {
+          const { data } = await me({
+            variables: { input: { token } },
+          })
           const user = data?.me.user
           if (user) {
             dispatch({
               type: ActionType.INITIALIZE,
               payload: {
                 isAuthenticated: true,
-                user: {
-                  name: user.name,
-                  email: user.email,
-                },
+                user,
               },
             })
           }
@@ -158,25 +169,16 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       }
     }
     initialize()
-  }, [me])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  const login = async (token?: string | null): Promise<void> => {
-    if (token) {
-      localStorage.setItem(JWT_TOKEN, token)
-      const { data } = await me({ variables: { input: { token } } })
-      const user = data?.me.user
-      if (user) {
-        dispatch({
-          type: ActionType.LOGIN,
-          payload: {
-            user,
-          },
-        })
-      }
-    }
+  const login = async (): Promise<void> => {
+    dispatch({
+      type: ActionType.LOGIN,
+      payload: {},
+    })
   }
   const logout = async (): Promise<void> => {
-    localStorage.removeItem(JWT_TOKEN)
     dispatch({ type: ActionType.LOGOUT })
   }
 
@@ -185,29 +187,10 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     password: string,
     name: string,
   ): Promise<void> => {
-    const { data } = await registerMutation({
-      variables: {
-        input: {
-          email,
-          password,
-          name,
-        },
-      },
+    dispatch({
+      type: ActionType.REGISTER,
+      payload: {},
     })
-    const token = data?.createAccount.token
-    if (token) {
-      localStorage.setItem(JWT_TOKEN, token)
-      const { data } = await me({ variables: { input: { token } } })
-      const user = data?.me.user
-      if (user) {
-        dispatch({
-          type: ActionType.REGISTER,
-          payload: {
-            user,
-          },
-        })
-      }
-    }
   }
 
   return (
