@@ -1,7 +1,7 @@
 import { ApolloClient, ApolloLink, from, InMemoryCache } from '@apollo/client'
 import { onError } from '@apollo/client/link/error'
 import { createUploadLink } from 'apollo-upload-client'
-import { tokenVar } from './vars'
+import { cache, tokenVar } from './cache'
 
 const uploadHttpLink = createUploadLink({
   uri:
@@ -16,7 +16,7 @@ const authLink = new ApolloLink((operation, forward) => {
     return {
       headers: {
         ...headers,
-        authorization: tokenVar() || '',
+        Authorization: `Bearer ${tokenVar()}` || '',
       },
     }
   })
@@ -38,5 +38,5 @@ const linkChain = from([authLink, errorLink, uploadHttpLink])
 export const client = new ApolloClient({
   link: linkChain,
   ssrMode: typeof window === 'undefined',
-  cache: new InMemoryCache(),
+  cache,
 })

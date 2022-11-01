@@ -1,10 +1,16 @@
+import { useRouter } from 'next/router'
 import { createContext, type FC, ReactNode, useReducer, useEffect } from 'react'
 import { ACCESS_TOKEN } from '../constants'
+import { useMounted } from '../hooks/use-mounted'
+import { tokenVar } from '../lib/apollo/cache'
 
 import {
   useMeLazyQuery,
   useCreateAccountMutation,
+  useLogoutMutation,
+  useLoginMutation,
 } from '../lib/graphql/__generated__'
+import { getCookieToken } from '../utils/get-cookie-token'
 
 type User = {
   id: number
@@ -12,6 +18,12 @@ type User = {
   name: string
   password?: string
   avatar?: string | null
+  company?: string | null
+}
+
+interface LoginInput {
+  email: string
+  password: string
 }
 
 interface State {
@@ -21,8 +33,8 @@ interface State {
 }
 
 export interface AuthContextValue extends State {
-  login: (token?: string | null) => Promise<void>
-  logout: () => Promise<void>
+  login: (loginInput: LoginInput) => Promise<void>
+  logout: (userId: number) => Promise<void>
   register: (email: string, password: string, name: string) => Promise<void>
 }
 
@@ -47,7 +59,9 @@ type InitializeAction = {
 
 type LoginAction = {
   type: ActionType.LOGIN
-  payload: {}
+  payload: {
+    user: User
+  }
 }
 
 type LogoutAction = {
@@ -80,9 +94,11 @@ const handler: Record<ActionType, Handler> = {
     }
   },
   LOGIN: (state: State, action: LoginAction): State => {
+    const { user } = action.payload
     return {
       ...state,
       isAuthenticated: true,
+      user,
     }
   },
   LOGOUT: (state: State): State => ({
@@ -109,23 +125,40 @@ export const AuthContext = createContext<AuthContextValue>({
 })
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
+  const isMounted = useMounted()
+  const router = useRouter()
   const [state, dispatch] = useReducer(reducer, initialState)
   const [me] = useMeLazyQuery()
   const [registerMutation] = useCreateAccountMutation()
+  const [logoutMutation] = useLogoutMutation({
+    onCompleted: () => {
+      console.log('hi')
+      router.push('/login')
+    },
+  })
+
+  const [loginMutation, { loading }] = useLoginMutation({
+    onCompleted: (result) => {
+      if (result.login.ok && result.login.token) {
+        tokenVar(result.login.token)
+        if (isMounted()) {
+          const returnUrl =
+            (router.query.returnUrl as string | undefined) || '/'
+          router.push(returnUrl).catch(console.error)
+        }
+      } else if (result.login.error) {
+        if (isMounted()) {
+          // formik.setStatus({ success: false })
+          // formik.setErrors({ submit: result.login.error })
+          // formik.setSubmitting(false)
+        }
+      }
+    },
+  })
 
   useEffect(() => {
     const initialize = async (): Promise<void> => {
-      let token: string | null = null
-      const cookies = document.cookie
-      if (cookies) {
-        const parseCookies = cookies.split(';')
-        const accessTokenCookie = parseCookies.filter(
-          (cookie) => cookie.split('=')[0] === ACCESS_TOKEN,
-        )[0]
-        if (accessTokenCookie) {
-          token = accessTokenCookie.split('=')[1]
-        }
-      }
+      const token = getCookieToken(ACCESS_TOKEN)
       try {
         dispatch({
           type: ActionType.INITIALIZE,
@@ -134,10 +167,9 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
             user: null,
           },
         })
-        if (typeof token === 'string') {
-          const { data } = await me({
-            variables: { input: { token } },
-          })
+        if (token) {
+          tokenVar(token)
+          const { data } = await me()
           const user = data?.me.user
           if (user) {
             dispatch({
@@ -172,13 +204,32 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const login = async (): Promise<void> => {
-    dispatch({
-      type: ActionType.LOGIN,
-      payload: {},
+  const login = async (loginInput: LoginInput): Promise<void> => {
+    await loginMutation({
+      variables: {
+        input: {
+          ...loginInput,
+        },
+      },
     })
+    const { data } = await me()
+    const user = data?.me.user
+    // dispatch({
+    //   type: ActionType.LOGIN,
+    //   payload: {
+    //     // user,
+    //   },
+    // })
   }
-  const logout = async (): Promise<void> => {
+  const logout = async (userId: number): Promise<void> => {
+    await logoutMutation({
+      variables: {
+        input: {
+          id: userId,
+        },
+      },
+    })
+
     dispatch({ type: ActionType.LOGOUT })
   }
 

@@ -6,6 +6,7 @@ const USER_FRAGMENT = gql`
     name
     email
     avatar
+    company
     createdAt
     updatedAt
   }
@@ -41,8 +42,8 @@ gql`
     }
   }
 
-  query Me($input:MeInput!) {
-    me(input:$input) {
+  query Me {
+    me {
       ok
       error
       user {

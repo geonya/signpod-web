@@ -88,8 +88,11 @@ export type LogoutOutput = {
   ok: Scalars['Boolean'];
 };
 
-export type MeInput = {
-  token?: InputMaybe<Scalars['String']>;
+export type MeOutput = {
+  __typename?: 'MeOutput';
+  error?: Maybe<Scalars['String']>;
+  ok: Scalars['Boolean'];
+  user?: Maybe<User>;
 };
 
 export type Mutation = {
@@ -99,6 +102,7 @@ export type Mutation = {
   editAccount: EditAccountOutput;
   login: LoginOutput;
   logout: LogoutOutput;
+  refreshToken: RefreshTokenOutput;
 };
 
 
@@ -127,6 +131,11 @@ export type MutationLogoutArgs = {
   input: LogoutInput;
 };
 
+
+export type MutationRefreshTokenArgs = {
+  input: RefreshTokenInput;
+};
+
 export type Photo = {
   __typename?: 'Photo';
   alt?: Maybe<Scalars['String']>;
@@ -140,7 +149,7 @@ export type Photo = {
 export type Query = {
   __typename?: 'Query';
   getUser: GetUserOutput;
-  me: GetUserOutput;
+  me: MeOutput;
 };
 
 
@@ -148,14 +157,21 @@ export type QueryGetUserArgs = {
   input: GetUserInput;
 };
 
+export type RefreshTokenInput = {
+  userId: Scalars['Int'];
+};
 
-export type QueryMeArgs = {
-  input: MeInput;
+export type RefreshTokenOutput = {
+  __typename?: 'RefreshTokenOutput';
+  error?: Maybe<Scalars['String']>;
+  ok: Scalars['Boolean'];
+  token?: Maybe<Scalars['String']>;
 };
 
 export type User = {
   __typename?: 'User';
   avatar?: Maybe<Scalars['String']>;
+  company?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
   email: Scalars['String'];
   id: Scalars['Int'];
@@ -178,7 +194,7 @@ export type Work = {
   updatedAt: Scalars['DateTime'];
 };
 
-export type UserFragmentFragment = { __typename?: 'User', id: number, name: string, email: string, avatar?: string | null, createdAt: any, updatedAt: any };
+export type UserFragmentFragment = { __typename?: 'User', id: number, name: string, email: string, avatar?: string | null, company?: string | null, createdAt: any, updatedAt: any };
 
 export type CreateAccountMutationVariables = Exact<{
   input: CreateAccountInput;
@@ -208,12 +224,17 @@ export type LogoutMutationVariables = Exact<{
 
 export type LogoutMutation = { __typename?: 'Mutation', logout: { __typename?: 'LogoutOutput', ok: boolean, error?: string | null } };
 
-export type MeQueryVariables = Exact<{
-  input: MeInput;
+export type RefreshTokenMutationVariables = Exact<{
+  input: RefreshTokenInput;
 }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: { __typename?: 'GetUserOutput', ok: boolean, error?: string | null, user?: { __typename?: 'User', id: number, name: string, email: string, avatar?: string | null, createdAt: any, updatedAt: any } | null } };
+export type RefreshTokenMutation = { __typename?: 'Mutation', refreshToken: { __typename?: 'RefreshTokenOutput', ok: boolean, error?: string | null } };
+
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = { __typename?: 'Query', me: { __typename?: 'MeOutput', ok: boolean, error?: string | null, user?: { __typename?: 'User', id: number, name: string, email: string, avatar?: string | null, company?: string | null, createdAt: any, updatedAt: any } | null } };
 
 export type CreateWorkMutationVariables = Exact<{
   input: CreateWorkInput;
@@ -229,6 +250,7 @@ export const UserFragmentFragmentDoc = gql`
   name
   email
   avatar
+  company
   createdAt
   updatedAt
 }
@@ -371,9 +393,43 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const RefreshTokenDocument = gql`
+    mutation RefreshToken($input: RefreshTokenInput!) {
+  refreshToken(input: $input) {
+    ok
+    error
+  }
+}
+    `;
+export type RefreshTokenMutationFn = Apollo.MutationFunction<RefreshTokenMutation, RefreshTokenMutationVariables>;
+
+/**
+ * __useRefreshTokenMutation__
+ *
+ * To run a mutation, you first call `useRefreshTokenMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRefreshTokenMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [refreshTokenMutation, { data, loading, error }] = useRefreshTokenMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRefreshTokenMutation(baseOptions?: Apollo.MutationHookOptions<RefreshTokenMutation, RefreshTokenMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RefreshTokenMutation, RefreshTokenMutationVariables>(RefreshTokenDocument, options);
+      }
+export type RefreshTokenMutationHookResult = ReturnType<typeof useRefreshTokenMutation>;
+export type RefreshTokenMutationResult = Apollo.MutationResult<RefreshTokenMutation>;
+export type RefreshTokenMutationOptions = Apollo.BaseMutationOptions<RefreshTokenMutation, RefreshTokenMutationVariables>;
 export const MeDocument = gql`
-    query Me($input: MeInput!) {
-  me(input: $input) {
+    query Me {
+  me {
     ok
     error
     user {
@@ -395,11 +451,10 @@ export const MeDocument = gql`
  * @example
  * const { data, loading, error } = useMeQuery({
  *   variables: {
- *      input: // value for 'input'
  *   },
  * });
  */
-export function useMeQuery(baseOptions: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
+export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, options);
       }

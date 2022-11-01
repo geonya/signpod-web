@@ -1,20 +1,18 @@
-import type { AppContext, AppProps } from 'next/app'
+import type { AppProps } from 'next/app'
 import { CssBaseline, ThemeProvider } from '@mui/material'
 import Head from 'next/head'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import createEmotionCache from '../utils/createEmotionCache'
-import { Provider as ReduxProvider } from 'react-redux'
-import { store } from '../store'
+
 import { Toaster } from 'react-hot-toast'
 import type { NextPage } from 'next'
-import { AuthConsumer, AuthProvider } from '../contexts/jwt-context'
-import { SplashScreen } from '../components/splash-screen'
+
 import Router from 'next/router'
 import nProgress from 'nprogress'
 import { ApolloProvider } from '@apollo/client'
 import { client } from '../lib/apollo/client'
 import { createMyTheme } from '../theme'
-import { useEffect } from 'react'
+import { AuthProvider } from '../components/auth/auth-provider'
 
 interface MyAppProps extends AppProps {
   Component: NextPage
@@ -33,6 +31,7 @@ const MyApp = ({
   emotionCache = clientSideEmotionCache,
 }: MyAppProps) => {
   const getLayout = Component.getLayout ?? ((page) => page)
+
   // useEffect(() => {
   //   gtm.initialize(gtmConfig)
   // }, [])
@@ -44,23 +43,11 @@ const MyApp = ({
           <title>signpod inc</title>
           <meta name='viewport' content='initial-scale=1, width=device-width' />
         </Head>
-        <ReduxProvider store={store}>
-          <AuthProvider>
-            <ThemeProvider theme={createMyTheme({ mode: 'light' })}>
-              <CssBaseline />
-              <Toaster position='top-center' />
-              <AuthConsumer>
-                {(auth) =>
-                  !auth.isInitialized ? (
-                    <SplashScreen />
-                  ) : (
-                    getLayout(<Component {...pageProps} />)
-                  )
-                }
-              </AuthConsumer>
-            </ThemeProvider>
-          </AuthProvider>
-        </ReduxProvider>
+        <ThemeProvider theme={createMyTheme({ mode: 'light' })}>
+          <CssBaseline />
+          <Toaster position='top-center' />
+          <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
+        </ThemeProvider>
       </ApolloProvider>
     </CacheProvider>
   )

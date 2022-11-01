@@ -15,19 +15,17 @@ import { useMounted } from '../../hooks/use-mounted'
 import * as Yup from 'yup'
 import { Facebook, Google } from '@mui/icons-material'
 import { useLoginMutation } from '../../lib/graphql/__generated__'
-import { tokenVar } from '../../lib/apollo/vars'
+import { isAuthenticatedVar } from '../../lib/apollo/cache'
 
 const JWT_EXPIRY_TIME = 24 * 3600 * 1000 // 만료 시간 (24시간 밀리 초로 표현)
 
 export const JwtLogin: FC = () => {
   const isMounted = useMounted()
   const router = useRouter()
-  const { login } = useAuth()
   const [loginMutation, { loading }] = useLoginMutation({
     onCompleted: (result) => {
-      if (result.login.ok && result.login.token) {
-        login(result.login.token)
-        tokenVar(result.login.token)
+      if (result.login.ok) {
+        isAuthenticatedVar(true)
         if (isMounted()) {
           const returnUrl =
             (router.query.returnUrl as string | undefined) || '/'
@@ -42,8 +40,6 @@ export const JwtLogin: FC = () => {
       }
     },
   })
-  const onSlientRefresh = () => {}
-  const onLoginSuccess = (token: string) => {}
 
   const formik = useFormik({
     initialValues: {

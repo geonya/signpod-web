@@ -1,35 +1,24 @@
+import { useReactiveVar } from '@apollo/client'
 import { Box } from '@mui/material'
-import type { GetServerSideProps, NextPage } from 'next'
-import cookies from 'next-cookies'
+import type { NextPage } from 'next'
 import Head from 'next/head'
-import { useEffect } from 'react'
-
 import { DashboardLayout } from '../components/dashboard/dashboard-layout'
-import { ACCESS_TOKEN } from '../constants'
-import { useAuth } from '../hooks/use-auth'
-import { tokenVar } from '../lib/apollo/vars'
+import { isAuthenticatedVar, userVar } from '../lib/apollo/cache'
 
-interface HomeProps {
-  token?: string | null
-}
-
-const Home: NextPage<HomeProps> = ({ token }) => {
+const Home: NextPage = () => {
   // useEffect(() => {
   //   gtm.push({ event: 'page-view' })
   // }, [])
-
-  const { isAuthenticated, user } = useAuth()
-  console.log(user)
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   return (
     <>
       <Head>
         <title>Main | signpod</title>
       </Head>
-      <Box>{isAuthenticated ? 'Your Are Logged In!' : 'GUEST PAGE'}</Box>
+      <Box>
+        {useReactiveVar(isAuthenticatedVar)
+          ? 'Your Are Logged In!'
+          : 'GUEST PAGE'}
+      </Box>
     </>
   )
 }

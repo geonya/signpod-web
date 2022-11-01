@@ -15,11 +15,13 @@ import {
   Typography,
 } from '@mui/material'
 import NextLink from 'next/link'
-import { useRouter } from 'next/router'
 import type { FC } from 'react'
 import toast from 'react-hot-toast'
-import { useAuth } from '../../hooks/use-auth'
 import PropTypes from 'prop-types'
+import { useReactiveVar } from '@apollo/client'
+import { userVar } from '../../lib/apollo/cache'
+import { useLogoutMutation } from '../../lib/graphql/__generated__'
+import { useRouter } from 'next/router'
 
 interface AccountPopoverProps {
   anchorEl: null | Element
@@ -33,18 +35,21 @@ export const AccountPopover: FC<AccountPopoverProps> = ({
   open,
   ...other
 }) => {
-  const { logout } = useAuth()
+  const user = useReactiveVar(userVar)
   const router = useRouter()
-  const user = {
-    avatar: '/static/avatar.jpeg',
-    name: 'geony',
-    company: '사인팟',
-  }
+  const [logoutMutation] = useLogoutMutation({
+    onCompleted: (data) => {
+      if (data.logout.ok) {
+        router.push('/login')
+      }
+    },
+  })
   const handleLogout = async (): Promise<void> => {
     try {
       onClose?.()
-      await logout()
-      router.push('/login')
+      if (user) {
+        logoutMutation({ variables: { input: { id: user.id } } })
+      }
     } catch (error) {
       console.error(error)
       toast.error('로그아웃 에러')
@@ -72,7 +77,7 @@ export const AccountPopover: FC<AccountPopoverProps> = ({
         }}
       >
         <Avatar
-          src={user.avatar}
+          src={user?.avatar || ''}
           sx={{
             height: 40,
             width: 40,
@@ -81,9 +86,9 @@ export const AccountPopover: FC<AccountPopoverProps> = ({
           <AccountCircle fontSize='small' />
         </Avatar>
         <Box sx={{ ml: 1 }}>
-          <Typography variant='body1'>{user.name}</Typography>
+          <Typography variant='body1'>{user?.name || '익명'}</Typography>
           <Typography color='textSecondary' variant='body2'>
-            {user.company}
+            {user?.company || '익명'}
           </Typography>
         </Box>
       </Box>
