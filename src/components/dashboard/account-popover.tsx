@@ -48,7 +48,7 @@ export const AccountPopover: FC<AccountPopoverProps> = ({
     try {
       onClose?.()
       if (user) {
-        logoutMutation({ variables: { input: { id: user.id } } })
+        logoutMutation()
         userVar(null)
         isAuthenticatedVar(false)
       }
