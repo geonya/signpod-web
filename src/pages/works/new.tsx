@@ -5,8 +5,12 @@ import Head from 'next/head'
 import { Box, Breadcrumbs, Container, Link, Typography } from '@mui/material'
 import { DashboardLayout } from '../../components/dashboard/dashboard-layout'
 import { CreateWorkForm } from '../../components/works/work-create-form'
+import { useReactiveVar } from '@apollo/client'
+import { userVar } from '../../lib/apollo/cache'
 
 const CreateWork: NextPage = () => {
+  const user = useReactiveVar(userVar)
+  console.log(user)
   return (
     <>
       <Head>

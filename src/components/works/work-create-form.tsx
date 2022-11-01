@@ -36,7 +36,7 @@ export const CreateWorkForm: FC = (props) => {
   const [droppedFiles, setDroppedFiles] = useState<DroppedFile[]>([])
   const [createWorkMutation] = useCreateWorkMutation({
     onCompleted: () => {
-      // router.push('/works').catch(console.error)
+      router.push('/works').catch(console.error)
     },
   })
   const formik = useFormik({

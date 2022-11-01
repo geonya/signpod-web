@@ -17,7 +17,6 @@ gql`
     createAccount(input: $input) {
       ok
       error
-      token
     }
   }
 
@@ -25,7 +24,6 @@ gql`
     login(input: $input) {
       ok
       error
-      token
     }
   }
   mutation EditAccount($input:EditAccountInput!) {

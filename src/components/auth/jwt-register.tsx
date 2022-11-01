@@ -18,11 +18,9 @@ import { useAuth } from '../../hooks/use-auth'
 export const JwtRegister: FC = () => {
   const isMounted = useMounted()
   const router = useRouter()
-  const { login } = useAuth()
   const [createAccount, { loading }] = useCreateAccountMutation({
     onCompleted: (result) => {
-      if (result.createAccount.ok || result.createAccount.token) {
-        login(result.createAccount.token)
+      if (result.createAccount.ok) {
         if (isMounted()) {
           const returnUrl =
             (router.query.returnUrl as string | undefined) || '/'
