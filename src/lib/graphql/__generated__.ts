@@ -27,7 +27,6 @@ export type CreateAccountOutput = {
   __typename?: 'CreateAccountOutput';
   error?: Maybe<Scalars['String']>;
   ok: Scalars['Boolean'];
-  token?: Maybe<Scalars['String']>;
 };
 
 export type CreateWorkInput = {
@@ -75,11 +74,6 @@ export type LoginOutput = {
   __typename?: 'LoginOutput';
   error?: Maybe<Scalars['String']>;
   ok: Scalars['Boolean'];
-  token?: Maybe<Scalars['String']>;
-};
-
-export type LogoutInput = {
-  id: Scalars['Int'];
 };
 
 export type LogoutOutput = {
@@ -102,7 +96,6 @@ export type Mutation = {
   editAccount: EditAccountOutput;
   login: LoginOutput;
   logout: LogoutOutput;
-  refreshToken: RefreshTokenOutput;
 };
 
 
@@ -126,16 +119,6 @@ export type MutationLoginArgs = {
   input: LoginInput;
 };
 
-
-export type MutationLogoutArgs = {
-  input: LogoutInput;
-};
-
-
-export type MutationRefreshTokenArgs = {
-  input: RefreshTokenInput;
-};
-
 export type Photo = {
   __typename?: 'Photo';
   alt?: Maybe<Scalars['String']>;
@@ -155,17 +138,6 @@ export type Query = {
 
 export type QueryGetUserArgs = {
   input: GetUserInput;
-};
-
-export type RefreshTokenInput = {
-  userId: Scalars['Int'];
-};
-
-export type RefreshTokenOutput = {
-  __typename?: 'RefreshTokenOutput';
-  error?: Maybe<Scalars['String']>;
-  ok: Scalars['Boolean'];
-  token?: Maybe<Scalars['String']>;
 };
 
 export type User = {
@@ -201,14 +173,14 @@ export type CreateAccountMutationVariables = Exact<{
 }>;
 
 
-export type CreateAccountMutation = { __typename?: 'Mutation', createAccount: { __typename?: 'CreateAccountOutput', ok: boolean, error?: string | null, token?: string | null } };
+export type CreateAccountMutation = { __typename?: 'Mutation', createAccount: { __typename?: 'CreateAccountOutput', ok: boolean, error?: string | null } };
 
 export type LoginMutationVariables = Exact<{
   input: LoginInput;
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginOutput', ok: boolean, error?: string | null, token?: string | null } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginOutput', ok: boolean, error?: string | null } };
 
 export type EditAccountMutationVariables = Exact<{
   input: EditAccountInput;
@@ -217,19 +189,10 @@ export type EditAccountMutationVariables = Exact<{
 
 export type EditAccountMutation = { __typename?: 'Mutation', editAccount: { __typename?: 'EditAccountOutput', ok: boolean, error?: string | null } };
 
-export type LogoutMutationVariables = Exact<{
-  input: LogoutInput;
-}>;
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 
 
 export type LogoutMutation = { __typename?: 'Mutation', logout: { __typename?: 'LogoutOutput', ok: boolean, error?: string | null } };
-
-export type RefreshTokenMutationVariables = Exact<{
-  input: RefreshTokenInput;
-}>;
-
-
-export type RefreshTokenMutation = { __typename?: 'Mutation', refreshToken: { __typename?: 'RefreshTokenOutput', ok: boolean, error?: string | null } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -260,7 +223,6 @@ export const CreateAccountDocument = gql`
   createAccount(input: $input) {
     ok
     error
-    token
   }
 }
     `;
@@ -295,7 +257,6 @@ export const LoginDocument = gql`
   login(input: $input) {
     ok
     error
-    token
   }
 }
     `;
@@ -360,8 +321,8 @@ export type EditAccountMutationHookResult = ReturnType<typeof useEditAccountMuta
 export type EditAccountMutationResult = Apollo.MutationResult<EditAccountMutation>;
 export type EditAccountMutationOptions = Apollo.BaseMutationOptions<EditAccountMutation, EditAccountMutationVariables>;
 export const LogoutDocument = gql`
-    mutation Logout($input: LogoutInput!) {
-  logout(input: $input) {
+    mutation Logout {
+  logout {
     ok
     error
   }
@@ -382,7 +343,6 @@ export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMut
  * @example
  * const [logoutMutation, { data, loading, error }] = useLogoutMutation({
  *   variables: {
- *      input: // value for 'input'
  *   },
  * });
  */
@@ -393,40 +353,6 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
-export const RefreshTokenDocument = gql`
-    mutation RefreshToken($input: RefreshTokenInput!) {
-  refreshToken(input: $input) {
-    ok
-    error
-  }
-}
-    `;
-export type RefreshTokenMutationFn = Apollo.MutationFunction<RefreshTokenMutation, RefreshTokenMutationVariables>;
-
-/**
- * __useRefreshTokenMutation__
- *
- * To run a mutation, you first call `useRefreshTokenMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRefreshTokenMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [refreshTokenMutation, { data, loading, error }] = useRefreshTokenMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useRefreshTokenMutation(baseOptions?: Apollo.MutationHookOptions<RefreshTokenMutation, RefreshTokenMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RefreshTokenMutation, RefreshTokenMutationVariables>(RefreshTokenDocument, options);
-      }
-export type RefreshTokenMutationHookResult = ReturnType<typeof useRefreshTokenMutation>;
-export type RefreshTokenMutationResult = Apollo.MutationResult<RefreshTokenMutation>;
-export type RefreshTokenMutationOptions = Apollo.BaseMutationOptions<RefreshTokenMutation, RefreshTokenMutationVariables>;
 export const MeDocument = gql`
     query Me {
   me {

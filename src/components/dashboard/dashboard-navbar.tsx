@@ -80,8 +80,7 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = ({
   const AccountButton = () => {
     const anchorRef = useRef<HTMLButtonElement | null>(null)
     const [openPopover, setOpenPopover] = useState<boolean>(false)
-    // To get the user from the authContext, you can use
-    // `const { user } = useAuth();`
+
     const user = {
       avatar: '/static/avatar.jpeg',
       name: 'geony',

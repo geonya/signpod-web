@@ -7,10 +7,11 @@ import { DashboardLayout } from '../../components/dashboard/dashboard-layout'
 import { CreateWorkForm } from '../../components/works/work-create-form'
 import { useReactiveVar } from '@apollo/client'
 import { userVar } from '../../lib/apollo/cache'
+import { AuthGuard } from '../../components/auth/auth-guard'
 
 const CreateWork: NextPage = () => {
   const user = useReactiveVar(userVar)
-  console.log(user)
+
   return (
     <>
       <Head>
@@ -49,6 +50,10 @@ const CreateWork: NextPage = () => {
   )
 }
 
-CreateWork.getLayout = (page) => <DashboardLayout>{page}</DashboardLayout>
+CreateWork.getLayout = (page) => (
+  <AuthGuard>
+    <DashboardLayout>{page}</DashboardLayout>
+  </AuthGuard>
+)
 
 export default CreateWork

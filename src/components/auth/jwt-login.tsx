@@ -10,8 +10,6 @@ import {
 import { useFormik } from 'formik'
 import { useRouter } from 'next/router'
 import { type FC } from 'react'
-import { useAuth } from '../../hooks/use-auth'
-import { useMounted } from '../../hooks/use-mounted'
 import * as Yup from 'yup'
 import { Facebook, Google } from '@mui/icons-material'
 import { useLoginMutation } from '../../lib/graphql/__generated__'
@@ -20,23 +18,16 @@ import { isAuthenticatedVar } from '../../lib/apollo/cache'
 const JWT_EXPIRY_TIME = 24 * 3600 * 1000 // 만료 시간 (24시간 밀리 초로 표현)
 
 export const JwtLogin: FC = () => {
-  const isMounted = useMounted()
   const router = useRouter()
   const [loginMutation, { loading }] = useLoginMutation({
     onCompleted: (result) => {
       if (result.login.ok) {
         isAuthenticatedVar(true)
-        if (isMounted()) {
-          const returnUrl =
-            (router.query.returnUrl as string | undefined) || '/'
-          router.push(returnUrl).catch(console.error)
-        }
+        router.push('/')
       } else if (result.login.error) {
-        if (isMounted()) {
-          formik.setStatus({ success: false })
-          formik.setErrors({ submit: result.login.error })
-          formik.setSubmitting(false)
-        }
+        formik.setStatus({ success: false })
+        formik.setErrors({ submit: result.login.error })
+        formik.setSubmitting(false)
       }
     },
   })
@@ -66,11 +57,9 @@ export const JwtLogin: FC = () => {
         })
       } catch (error: any) {
         console.error(error)
-        if (isMounted()) {
-          helpers.setStatus({ success: false })
-          helpers.setErrors({ submit: error.message })
-          helpers.setSubmitting(false)
-        }
+        helpers.setStatus({ success: false })
+        helpers.setErrors({ submit: error.message })
+        helpers.setSubmitting(false)
       }
     },
   })

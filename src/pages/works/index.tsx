@@ -1,17 +1,19 @@
+import { useReactiveVar } from '@apollo/client'
 import { Add } from '@mui/icons-material'
 import { Box, Button, Card, Container, Grid, Typography } from '@mui/material'
 import { type NextPage } from 'next'
 import Head from 'next/head'
+import Link from 'next/link'
 import { useState } from 'react'
 import { DashboardLayout } from '../../components/dashboard/dashboard-layout'
-import MyLink from '../../components/link'
 import { WorkGridList } from '../../components/works/work-grid-list'
 import {
   WorkFilters,
   WorkListFilters,
 } from '../../components/works/work-list-filters'
-import { useAuth } from '../../hooks/use-auth'
+
 import { useMounted } from '../../hooks/use-mounted'
+import { userVar } from '../../lib/apollo/cache'
 import { Work } from '../../types/work'
 
 const Works: NextPage = () => {
@@ -26,8 +28,8 @@ const Works: NextPage = () => {
   })
 
   const handleFiltersChange = () => {}
-  const { isAuthenticated, user } = useAuth()
 
+  const user = useReactiveVar(userVar)
   return (
     <>
       <Head>
@@ -49,14 +51,14 @@ const Works: NextPage = () => {
                 </Typography>
               </Grid>
               <Grid item>
-                <MyLink href='/works/new' passHref>
+                <Link href='/works/new' passHref>
                   <Button
                     startIcon={<Add fontSize='small' />}
                     variant='contained'
                   >
                     업로드
                   </Button>
-                </MyLink>
+                </Link>
               </Grid>
             </Grid>
           </Box>

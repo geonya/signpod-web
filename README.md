@@ -22,8 +22,9 @@ _220926_
   - [ ] 백엔드 연동
   - [ ] Pagination
 
-- [ ] JWT - Cookie Login
+- [x] JWT - Cookie Login
   - [x] cookie util
+  - [x] Access Token & Refresh Token
 - [ ] Profile Layout
 - [ ] Edit Profile Page
 - [ ] Google Cloud Deploy setup

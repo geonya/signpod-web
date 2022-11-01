@@ -33,8 +33,8 @@ gql`
     }
   }
 
-  mutation Logout($input:LogoutInput!) {
-    logout(input:$input) {
+  mutation Logout {
+    logout {
       ok
       error
     }

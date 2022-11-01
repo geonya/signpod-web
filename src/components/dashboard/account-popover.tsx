@@ -19,7 +19,7 @@ import type { FC } from 'react'
 import toast from 'react-hot-toast'
 import PropTypes from 'prop-types'
 import { useReactiveVar } from '@apollo/client'
-import { userVar } from '../../lib/apollo/cache'
+import { isAuthenticatedVar, userVar } from '../../lib/apollo/cache'
 import { useLogoutMutation } from '../../lib/graphql/__generated__'
 import { useRouter } from 'next/router'
 
@@ -40,7 +40,7 @@ export const AccountPopover: FC<AccountPopoverProps> = ({
   const [logoutMutation] = useLogoutMutation({
     onCompleted: (data) => {
       if (data.logout.ok) {
-        router.push('/login')
+        router.push('/')
       }
     },
   })
@@ -49,6 +49,8 @@ export const AccountPopover: FC<AccountPopoverProps> = ({
       onClose?.()
       if (user) {
         logoutMutation({ variables: { input: { id: user.id } } })
+        userVar(null)
+        isAuthenticatedVar(false)
       }
     } catch (error) {
       console.error(error)

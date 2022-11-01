@@ -2,24 +2,24 @@ import type { FC, ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import PropTypes from 'prop-types'
-import { useAuth } from '../../hooks/use-auth'
+import { isAuthenticatedVar } from '../../lib/apollo/cache'
+import { useReactiveVar } from '@apollo/client'
 
 interface GuestGuardProps {
   children: ReactNode
 }
 
 export const GuestGuard: FC<GuestGuardProps> = ({ children }) => {
-  const auth = useAuth()
   const router = useRouter()
   const [checked, setChecked] = useState(false)
-
+  const isAuthenticated = useReactiveVar(isAuthenticatedVar)
   useEffect(
     () => {
       if (!router.isReady) {
         return
       }
       // You should remove the "disableGuard" check, because it's meant to be used only in the demo.
-      if (auth.isAuthenticated) {
+      if (isAuthenticated) {
         router.push('/').catch(console.error)
       } else {
         setChecked(true)

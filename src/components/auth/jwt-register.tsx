@@ -13,7 +13,6 @@ import {
   Typography,
 } from '@mui/material'
 import { useMounted } from '../../hooks/use-mounted'
-import { useAuth } from '../../hooks/use-auth'
 
 export const JwtRegister: FC = () => {
   const isMounted = useMounted()
