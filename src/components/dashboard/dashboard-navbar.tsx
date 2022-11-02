@@ -20,6 +20,8 @@ import { NotificationsPopover } from './notifications-popover'
 import { SearchInput } from './search-input'
 import NextLink from 'next/link'
 import { Logo } from '../logo'
+import { useReactiveVar } from '@apollo/client'
+import { userVar } from '../../lib/apollo/cache'
 
 interface DashboardNavbarProps extends AppBarProps {
   onOpenSidebar?: () => void
@@ -42,6 +44,7 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = ({
   onOpenSidebar,
   ...other
 }) => {
+  const user = useReactiveVar(userVar)
   const NotiButton = () => {
     const anchorRef = useRef<HTMLButtonElement | null>(null)
     const [unread, setUnread] = useState(0)
@@ -81,11 +84,6 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = ({
     const anchorRef = useRef<HTMLButtonElement | null>(null)
     const [openPopover, setOpenPopover] = useState<boolean>(false)
 
-    const user = {
-      avatar: '/static/avatar.jpeg',
-      name: 'geony',
-      company: '사인팟',
-    }
     const handleOpenPopover = (): void => {
       setOpenPopover(true)
     }
@@ -111,7 +109,7 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = ({
               height: 30,
               width: 30,
             }}
-            src={user.avatar}
+            src={user?.avatar || ''}
           >
             <Person />
           </Avatar>

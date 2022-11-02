@@ -1,4 +1,4 @@
-import { FC, ReactNode, useLayoutEffect, useState } from 'react'
+import { FC, ReactNode } from 'react'
 import { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { getCookieToken } from '../../utils/get-cookie-token'
@@ -11,7 +11,6 @@ import {
 } from '../../lib/apollo/cache'
 import { SplashScreen } from '../splash-screen'
 import { useReactiveVar } from '@apollo/client'
-import { Backdrop, CircularProgress } from '@mui/material'
 
 interface AuthProviderProps {
   children: ReactNode
@@ -21,7 +20,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [getMe, { data }] = useMeLazyQuery()
   const isInitialized = useReactiveVar(isInitializedVar)
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const initialize = async (): Promise<void> => {
       console.log('initializing...')
       try {
@@ -51,18 +50,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
-  return (
-    <>
-      {isInitialized ? (
-        children
-      ) : (
-        <>
-          <SplashScreen />
-          {children}
-        </>
-      )}
-    </>
-  )
+  return <>{isInitialized ? children : <SplashScreen />}</>
 }
 
 AuthProvider.propTypes = {
