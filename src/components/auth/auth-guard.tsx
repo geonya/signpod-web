@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import PropTypes from 'prop-types'
 import { SplashScreen } from '../splash-screen'
-import { isAuthenticatedVar } from '../../lib/apollo/cache'
+import { isAuthenticatedVar, userVar } from '../../lib/apollo/cache'
 
 interface AuthGuardProps {
   children: ReactNode
@@ -18,7 +18,7 @@ export const AuthGuard: FC<AuthGuardProps> = ({ children }) => {
       if (!router.isReady) {
         return
       }
-      if (!isAuthenticatedVar()) {
+      if (!isAuthenticatedVar() && !userVar()) {
         router
           .push({
             pathname: '/login',

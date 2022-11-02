@@ -19,12 +19,10 @@ import { QuillEditor } from '../quill-editor'
 import { FileDropzone } from '../file-dropzone'
 import { categoryOptions } from './work-category-options'
 import { useCreateWorkMutation } from '../../lib/graphql/__generated__'
-import { FileWithPath } from 'react-dropzone'
-
-export type File = FileWithPath
+import { TFile } from '../../types/file'
 
 export interface DroppedFile {
-  file: File
+  file: TFile
   url?: string
   alt?: string
 }
@@ -56,7 +54,7 @@ export const CreateWorkForm: FC = (props) => {
       description: Yup.string().required(),
     }),
     onSubmit: async (values, helpers): Promise<void> => {
-      const files: File[] = droppedFiles.map((droppedFile) => droppedFile.file)
+      const files: TFile[] = droppedFiles.map((droppedFile) => droppedFile.file)
       try {
         await createWorkMutation({
           variables: {
@@ -79,7 +77,7 @@ export const CreateWorkForm: FC = (props) => {
     },
   })
 
-  const handleDrop = (newFiles: File[]): void => {
+  const handleDrop = (newFiles: TFile[]): void => {
     const newDroppedFiles: DroppedFile[] = newFiles.map((file) => ({
       file,
       url: URL.createObjectURL(file),

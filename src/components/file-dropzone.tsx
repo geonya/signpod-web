@@ -58,8 +58,6 @@ export const FileDropzone: FC<FileDropzoneProps> = ({
   validator,
   ...other
 }) => {
-  // We did not add the remaining props to avoid component complexity
-  // but you can simply add it if you need to.
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept,
     maxFiles,
@@ -118,6 +116,8 @@ export const FileDropzone: FC<FileDropzoneProps> = ({
           </Box>
         </Box>
       </Box>
+
+      {/* Upload File Preview */}
       {files.length > 0 && (
         <Box sx={{ mt: 2 }}>
           <List>
@@ -173,15 +173,6 @@ export const FileDropzone: FC<FileDropzoneProps> = ({
             <Button onClick={onRemoveAll} size='small' type='button'>
               모두 지우기
             </Button>
-            {/* <Button
-              onClick={onUpload}
-              size='small'
-              sx={{ ml: 2 }}
-              type='button'
-              variant='contained'
-            >
-              Upload
-            </Button> */}
           </Box>
         </Box>
       )}

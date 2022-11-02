@@ -10,25 +10,31 @@ _220926_
 - [x] 로그인 / 회원가입 페이지
 - [x] Account Profile Layout
 - [x] Dashboard Layout
+- [x] Domain Deploy
+
+      -- Works --
+
   - [x] Sidebar Layout
   - [x] Navbar Layout
+
     - [x] Account
     - [x] Noti
     - [x] Search
-- Works Page
 
   - [x] 카테고리 필터 디자인
   - [x] Create Works 레이아웃 디자인
-  - [ ] 백엔드 연동
-  - [ ] Works File Upload Test
+  - [x] Works File Upload Test
+  - [ ] Works List
   - [ ] Pagination
 
-- [x] Domain Deploy
+    -- Profile --
+
 - [x] JWT - Cookie Login
   - [x] cookie util
   - [x] Access Token & Refresh Token
-- [ ] Profile Layout
-- [ ] Edit Profile Page
+- [x] Edit Profile Page Layout
+- [ ] Edit Profile Functions
+
 - [ ] Project Gallery Layout
 - [ ] Project Pagination Design
 - [ ] Profile Modal

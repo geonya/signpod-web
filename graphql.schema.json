@@ -231,6 +231,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "company",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "email",
             "description": null,
             "type": {
@@ -324,7 +336,7 @@
       },
       {
         "kind": "INPUT_OBJECT",
-        "name": "GetUserInput",
+        "name": "FindUserByIdInput",
         "description": null,
         "fields": null,
         "inputFields": [
@@ -351,7 +363,7 @@
       },
       {
         "kind": "OBJECT",
-        "name": "GetUserOutput",
+        "name": "FindUserByIdOutput",
         "description": null,
         "fields": [
           {
@@ -678,6 +690,18 @@
             "description": null,
             "args": [
               {
+                "name": "file",
+                "description": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Upload",
+                  "ofType": null
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
                 "name": "input",
                 "description": null,
                 "type": {
@@ -866,7 +890,7 @@
         "description": null,
         "fields": [
           {
-            "name": "getUser",
+            "name": "findUserById",
             "description": null,
             "args": [
               {
@@ -877,7 +901,7 @@
                   "name": null,
                   "ofType": {
                     "kind": "INPUT_OBJECT",
-                    "name": "GetUserInput",
+                    "name": "FindUserByIdInput",
                     "ofType": null
                   }
                 },
@@ -891,7 +915,7 @@
               "name": null,
               "ofType": {
                 "kind": "OBJECT",
-                "name": "GetUserOutput",
+                "name": "FindUserByIdOutput",
                 "ofType": null
               }
             },

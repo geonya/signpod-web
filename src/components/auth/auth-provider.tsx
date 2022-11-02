@@ -28,10 +28,12 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         await getMe()
         const user = data?.me.user
         if (accessToken && user) {
+          console.log('user data saved!')
           isInitializedVar(true)
           isAuthenticatedVar(true)
           userVar(user)
         } else {
+          console.log('user data not found!')
           isInitializedVar(true)
           isAuthenticatedVar(false)
           userVar(null)

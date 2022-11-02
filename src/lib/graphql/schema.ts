@@ -26,8 +26,8 @@ gql`
       error
     }
   }
-  mutation EditAccount($input:EditAccountInput!) {
-    editAccount(input:$input) {
+  mutation EditAccount($input:EditAccountInput!, $file:Upload) {
+    editAccount(input:$input, file:$file) {
       ok
       error
     }

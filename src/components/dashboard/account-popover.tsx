@@ -91,9 +91,10 @@ export const AccountPopover: FC<AccountPopoverProps> = ({
           sx={{
             height: 40,
             width: 40,
+            bgcolor: 'transparent',
           }}
         >
-          <AccountCircle fontSize='small' />
+          <AccountCircle fontSize='large' color='action' />
         </Avatar>
         <Box sx={{ ml: 1 }}>
           <Typography variant='body1'>{user?.name || '익명'}</Typography>

@@ -42,6 +42,7 @@ export type CreateWorkOutput = {
 };
 
 export type EditAccountInput = {
+  company?: InputMaybe<Scalars['String']>;
   email?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Int']>;
   name?: InputMaybe<Scalars['String']>;
@@ -54,12 +55,12 @@ export type EditAccountOutput = {
   ok: Scalars['Boolean'];
 };
 
-export type GetUserInput = {
+export type FindUserByIdInput = {
   id: Scalars['Int'];
 };
 
-export type GetUserOutput = {
-  __typename?: 'GetUserOutput';
+export type FindUserByIdOutput = {
+  __typename?: 'FindUserByIdOutput';
   error?: Maybe<Scalars['String']>;
   ok: Scalars['Boolean'];
   user?: Maybe<User>;
@@ -111,6 +112,7 @@ export type MutationCreateWorkArgs = {
 
 
 export type MutationEditAccountArgs = {
+  file?: InputMaybe<Scalars['Upload']>;
   input: EditAccountInput;
 };
 
@@ -131,13 +133,13 @@ export type Photo = {
 
 export type Query = {
   __typename?: 'Query';
-  getUser: GetUserOutput;
+  findUserById: FindUserByIdOutput;
   me: MeOutput;
 };
 
 
-export type QueryGetUserArgs = {
-  input: GetUserInput;
+export type QueryFindUserByIdArgs = {
+  input: FindUserByIdInput;
 };
 
 export type User = {
@@ -184,6 +186,7 @@ export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'Lo
 
 export type EditAccountMutationVariables = Exact<{
   input: EditAccountInput;
+  file?: InputMaybe<Scalars['Upload']>;
 }>;
 
 
@@ -287,8 +290,8 @@ export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const EditAccountDocument = gql`
-    mutation EditAccount($input: EditAccountInput!) {
-  editAccount(input: $input) {
+    mutation EditAccount($input: EditAccountInput!, $file: Upload) {
+  editAccount(input: $input, file: $file) {
     ok
     error
   }
@@ -310,6 +313,7 @@ export type EditAccountMutationFn = Apollo.MutationFunction<EditAccountMutation,
  * const [editAccountMutation, { data, loading, error }] = useEditAccountMutation({
  *   variables: {
  *      input: // value for 'input'
+ *      file: // value for 'file'
  *   },
  * });
  */

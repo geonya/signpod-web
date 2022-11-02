@@ -2,15 +2,14 @@ import { Box, Container, Divider, Tab, Tabs, Typography } from '@mui/material'
 import { type NextPage } from 'next'
 import Head from 'next/head'
 import { type ChangeEvent, useState } from 'react'
+import { AccountGeneral } from '../components/account/account-general'
+import { AccountSecurity } from '../components/account/account-security'
 import { AuthGuard } from '../components/auth/auth-guard'
 import { DashboardLayout } from '../components/dashboard/dashboard-layout'
 
 const tabs = [
-  { label: 'General', value: 'general' },
-  { label: 'Billing', value: 'billing' },
-  { label: 'Team', value: 'team' },
-  { label: 'Notifications', value: 'notifications' },
-  { label: 'Security', value: 'security' },
+  { label: '기본 정보', value: 'general' },
+  { label: '보안', value: 'security' },
 ]
 
 const Account: NextPage = () => {
@@ -46,6 +45,8 @@ const Account: NextPage = () => {
             ))}
           </Tabs>
           <Divider sx={{ mb: 3 }} />
+          {currentTab === 'general' && <AccountGeneral />}
+          {currentTab === 'security' && <AccountSecurity />}
         </Container>
       </Box>
     </>
