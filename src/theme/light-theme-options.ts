@@ -28,12 +28,12 @@ const divider = '#E6E8F0'
 //   contrastText: '#FFFFFF',
 // }
 
-// const secondary = {
-//   main: '#10B981',
-//   light: '#3FC79A',
-//   dark: '#0B815A',
-//   contrastText: '#FFFFFF',
-// }
+const secondary = {
+  main: '#10B981',
+  light: '#3FC79A',
+  dark: '#0B815A',
+  contrastText: '#FFFFFF',
+}
 
 const success = {
   main: '#14B8A6',
@@ -176,7 +176,7 @@ export const lightThemeOptions: ThemeOptions = {
     mode: 'light',
     neutral,
     // primary,
-    // secondary,
+    secondary,
     success,
     text,
     warning,

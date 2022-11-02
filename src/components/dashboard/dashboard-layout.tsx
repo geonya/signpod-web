@@ -1,13 +1,25 @@
-import { Box, styled } from '@mui/material'
+import {
+  Box,
+  SpeedDial,
+  SpeedDialAction,
+  SpeedDialIcon,
+  styled,
+} from '@mui/material'
 import { FC, ReactNode, useState } from 'react'
 import PropTypes from 'prop-types'
 import { DashboardNavbar } from './dashboard-navbar'
 import { DashboardSidebar } from './dashboard-sidebar'
 import { SIDEBAR_WIDTH } from '../../constants'
+import { FileCopy, Phone, Save, Share } from '@mui/icons-material'
 
 interface DashboardLayoutProps {
   children?: ReactNode
 }
+const actions = [
+  { icon: <Phone />, name: '전화하기' },
+  { icon: <Share />, name: '공유하기' },
+  { icon: <FileCopy />, name: '복사하기' },
+]
 
 const DashboardLayoutRoot = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -40,6 +52,19 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
         onClose={(): void => setIsSidebarOpen(false)}
         open={isSidebarOpen}
       />
+      <SpeedDial
+        ariaLabel='SpeedDial basic example'
+        sx={{ position: 'fixed', bottom: 16, right: 16 }}
+        icon={<SpeedDialIcon />}
+      >
+        {actions.map((action) => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipTitle={action.name}
+          />
+        ))}
+      </SpeedDial>
     </>
   )
 }

@@ -1,5 +1,5 @@
 import type { FC } from 'react'
-import { Box } from '@mui/material'
+import { Box, CircularProgress } from '@mui/material'
 import { Logo } from './logo'
 import { keyframes } from '@emotion/react'
 
@@ -30,21 +30,22 @@ const bounce3 = keyframes`
 export const SplashScreen: FC = () => (
   <Box
     sx={{
-      alignItems: 'center',
-      backgroundColor: 'neutral.900',
+      position: 'fixed',
+      left: 0,
+      top: 0,
+      height: '100vh',
+      width: '100vw',
       display: 'flex',
       flexDirection: 'column',
-      height: '100vh',
+      alignItems: 'center',
       justifyContent: 'center',
-      left: 0,
+      backgroundColor: 'neutral.800',
+      opacity: 0.9,
       p: 3,
-      position: 'fixed',
-      top: 0,
-      width: '100vw',
       zIndex: 2000,
     }}
   >
-    <Logo
+    {/* <Logo
       sx={{
         height: 80,
         width: 80,
@@ -55,6 +56,7 @@ export const SplashScreen: FC = () => (
           animation: `${bounce3} 1s ease-in-out infinite`,
         },
       }}
-    />
+    /> */}
+    <CircularProgress size={77} disableShrink />
   </Box>
 )

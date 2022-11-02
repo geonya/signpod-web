@@ -1,11 +1,12 @@
 import { useReactiveVar } from '@apollo/client'
-import { Box } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { DashboardLayout } from '../components/dashboard/dashboard-layout'
 import { HomeHero } from '../components/home/home-hero'
+import { MainCarousel } from '../components/home/main-carousel'
 import { userVar } from '../lib/apollo/cache'
 import { useMeQuery } from '../lib/graphql/__generated__'
 
@@ -28,9 +29,17 @@ const Home: NextPage = () => {
       <Head>
         <title>Main | signpod</title>
       </Head>
-      <main>
+      <Stack
+        component='main'
+        sx={{
+          flexGrow: 1,
+          py: 5,
+        }}
+        spacing={5}
+      >
         <HomeHero />
-      </main>
+        <MainCarousel />
+      </Stack>
     </>
   )
 }
