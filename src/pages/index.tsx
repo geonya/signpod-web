@@ -3,10 +3,9 @@ import { Box } from '@mui/material'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { DashboardLayout } from '../components/dashboard/dashboard-layout'
-import { SplashScreen } from '../components/splash-screen'
-import { isAuthenticatedVar, userVar } from '../lib/apollo/cache'
+import { userVar } from '../lib/apollo/cache'
 import { useMeQuery } from '../lib/graphql/__generated__'
 
 const Home: NextPage = () => {
@@ -23,16 +22,12 @@ const Home: NextPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [router.isReady],
   )
-
   return (
     <>
       <Head>
         <title>Main | signpod</title>
       </Head>
-      <Box>
-        {user?.name}
-        <button onClick={() => refetch()}>Refetch</button>
-      </Box>
+      <Box>{user?.name}</Box>
     </>
   )
 }

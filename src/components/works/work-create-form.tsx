@@ -34,6 +34,11 @@ export const CreateWorkForm: FC = (props) => {
 
   const [droppedFiles, setDroppedFiles] = useState<DroppedFile[]>([])
   const [createWorkMutation] = useCreateWorkMutation({
+    context: {
+      headers: {
+        'apollo-require-preflight': true,
+      },
+    },
     onCompleted: () => {
       router.push('/works').catch(console.error)
     },

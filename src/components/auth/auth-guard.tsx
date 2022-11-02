@@ -2,9 +2,8 @@ import type { FC, ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import PropTypes from 'prop-types'
-import { useReactiveVar } from '@apollo/client'
-import { isAuthenticatedVar } from '../../lib/apollo/cache'
 import { SplashScreen } from '../splash-screen'
+import { isAuthenticatedVar } from '../../lib/apollo/cache'
 
 interface AuthGuardProps {
   children: ReactNode
@@ -13,15 +12,19 @@ interface AuthGuardProps {
 export const AuthGuard: FC<AuthGuardProps> = ({ children }) => {
   const router = useRouter()
   const [checked, setChecked] = useState(false)
-  const isAuthenticated = useReactiveVar(isAuthenticatedVar)
+
   useEffect(
     () => {
       if (!router.isReady) {
         return
       }
-      // You should remove the "disableGuard" check, because it's meant to be used only in the demo.
-      if (!isAuthenticated) {
-        router.push('/login').catch(console.error)
+      if (!isAuthenticatedVar()) {
+        router
+          .push({
+            pathname: '/login',
+            query: { returnUrl: router.asPath },
+          })
+          .catch(console.error)
       } else {
         setChecked(true)
       }
@@ -33,9 +36,6 @@ export const AuthGuard: FC<AuthGuardProps> = ({ children }) => {
   if (!checked) {
     return <SplashScreen />
   }
-
-  // If got here, it means that the redirect did not occur, and that tells us that the user is
-  // not authenticated / authorized.
 
   return <>{children}</>
 }

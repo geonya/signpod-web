@@ -20,17 +20,17 @@ _220926_
   - [x] 카테고리 필터 디자인
   - [x] Create Works 레이아웃 디자인
   - [ ] 백엔드 연동
+  - [ ] Works File Upload Test
   - [ ] Pagination
 
+- [x] Domain Deploy
 - [x] JWT - Cookie Login
   - [x] cookie util
   - [x] Access Token & Refresh Token
 - [ ] Profile Layout
 - [ ] Edit Profile Page
-- [ ] Google Cloud Deploy setup
 - [ ] Project Gallery Layout
 - [ ] Project Pagination Design
 - [ ] Profile Modal
 - [ ] Chat Setup
 - [ ] SEO Setup
-- [ ] Domain Deploy

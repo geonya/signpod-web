@@ -13,21 +13,19 @@ import { type FC } from 'react'
 import * as Yup from 'yup'
 import { Facebook, Google } from '@mui/icons-material'
 import { useLoginMutation } from '../../lib/graphql/__generated__'
-import { isAuthenticatedVar } from '../../lib/apollo/cache'
-
-const JWT_EXPIRY_TIME = 24 * 3600 * 1000 // 만료 시간 (24시간 밀리 초로 표현)
+import { useMounted } from '../../hooks/use-mounted'
 
 export const JwtLogin: FC = () => {
   const router = useRouter()
+  const isMounted = useMounted()
   const [loginMutation, { loading }] = useLoginMutation({
     onCompleted: (result) => {
       if (result.login.ok) {
-        isAuthenticatedVar(true)
-        router.push('/')
-      } else if (result.login.error) {
-        formik.setStatus({ success: false })
-        formik.setErrors({ submit: result.login.error })
-        formik.setSubmitting(false)
+        if (isMounted()) {
+          const returnUrl =
+            (router.query.returnUrl as string | undefined) || '/'
+          router.push(returnUrl).catch(console.error)
+        }
       }
     },
   })
@@ -57,9 +55,11 @@ export const JwtLogin: FC = () => {
         })
       } catch (error: any) {
         console.error(error)
-        helpers.setStatus({ success: false })
-        helpers.setErrors({ submit: error.message })
-        helpers.setSubmitting(false)
+        if (isMounted()) {
+          helpers.setStatus({ success: false })
+          helpers.setErrors({ submit: error.message })
+          helpers.setSubmitting(false)
+        }
       }
     },
   })

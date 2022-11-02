@@ -3,10 +3,8 @@ import { CssBaseline, ThemeProvider } from '@mui/material'
 import Head from 'next/head'
 import { CacheProvider, EmotionCache } from '@emotion/react'
 import createEmotionCache from '../utils/createEmotionCache'
-
 import { Toaster } from 'react-hot-toast'
 import type { NextPage } from 'next'
-
 import Router from 'next/router'
 import nProgress from 'nprogress'
 import { ApolloProvider } from '@apollo/client'
@@ -31,11 +29,6 @@ const MyApp = ({
   emotionCache = clientSideEmotionCache,
 }: MyAppProps) => {
   const getLayout = Component.getLayout ?? ((page) => page)
-
-  // useEffect(() => {
-  //   gtm.initialize(gtmConfig)
-  // }, [])
-
   return (
     <CacheProvider value={emotionCache}>
       <ApolloProvider client={client}>

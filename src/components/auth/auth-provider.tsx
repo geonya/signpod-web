@@ -1,56 +1,56 @@
-import { useReactiveVar } from '@apollo/client'
-import { useRouter } from 'next/router'
-import { type ReactNode, FC, useEffect } from 'react'
+import type { FC, ReactNode } from 'react'
+import { useEffect } from 'react'
+import PropTypes from 'prop-types'
+import { getCookieToken } from '../../utils/get-cookie-token'
 import { ACCESS_TOKEN } from '../../constants'
+import { useMeLazyQuery } from '../../lib/graphql/__generated__'
 import {
   isAuthenticatedVar,
   isInitializedVar,
-  tokenVar,
   userVar,
 } from '../../lib/apollo/cache'
-import { useMeLazyQuery, useMeQuery } from '../../lib/graphql/__generated__'
-import { getCookieToken } from '../../utils/get-cookie-token'
 import { SplashScreen } from '../splash-screen'
+import { useReactiveVar } from '@apollo/client'
 
 interface AuthProviderProps {
   children: ReactNode
 }
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
-  const { data } = useMeQuery()
-
-  const router = useRouter()
+  const [getMe, { data }] = useMeLazyQuery()
+  const isInitialized = useReactiveVar(isInitializedVar)
 
   useEffect(() => {
-    if (!router.isReady) {
-      return
-    }
     const initialize = async (): Promise<void> => {
+      console.log('initializing...')
       try {
-        console.log('페이지 초기화')
-        const token = getCookieToken(ACCESS_TOKEN)
-        tokenVar(token)
+        const accessToken = getCookieToken(ACCESS_TOKEN)
+        await getMe()
         const user = data?.me.user
-        if (user) {
-          userVar(user)
-          isAuthenticatedVar(true)
+        if (accessToken && user) {
           isInitializedVar(true)
+          isAuthenticatedVar(true)
+          userVar(user)
         } else {
           isInitializedVar(true)
           isAuthenticatedVar(false)
           userVar(null)
         }
-      } catch (error) {
-        console.error(error)
+      } catch (err) {
+        console.error(err)
         isInitializedVar(false)
         isAuthenticatedVar(false)
         userVar(null)
       }
     }
+
     initialize()
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, router.isReady])
+  }, [data])
 
-  return <>{useReactiveVar(isInitializedVar) ? children : <SplashScreen />}</>
+  return <>{isInitialized ? children : <SplashScreen />}</>
+}
+
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 }

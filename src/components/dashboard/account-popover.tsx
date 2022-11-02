@@ -36,6 +36,7 @@ export const AccountPopover: FC<AccountPopoverProps> = ({
   ...other
 }) => {
   const user = useReactiveVar(userVar)
+  const isAuthencated = useReactiveVar(isAuthenticatedVar)
   const router = useRouter()
   const [logoutMutation] = useLogoutMutation({
     onCompleted: (data) => {
@@ -47,11 +48,18 @@ export const AccountPopover: FC<AccountPopoverProps> = ({
   const handleLogout = async (): Promise<void> => {
     try {
       onClose?.()
-      if (user) {
-        logoutMutation()
-        userVar(null)
-        isAuthenticatedVar(false)
-      }
+      logoutMutation()
+      userVar(null)
+      isAuthenticatedVar(false)
+    } catch (error) {
+      console.error(error)
+      toast.error('로그아웃 에러')
+    }
+  }
+  const handleLogin = () => {
+    try {
+      onClose?.()
+      router.push({ pathname: '/login', query: { returnUrl: router.asPath } })
     } catch (error) {
       console.error(error)
       toast.error('로그아웃 에러')
@@ -102,7 +110,7 @@ export const AccountPopover: FC<AccountPopoverProps> = ({
               <AccountCircle fontSize='small' />
             </ListItemIcon>
             <ListItemText
-              primary={<Typography variant='body1'>Profile</Typography>}
+              primary={<Typography variant='body1'>내 프로필</Typography>}
             />
           </MenuItem>
         </NextLink>
@@ -112,31 +120,30 @@ export const AccountPopover: FC<AccountPopoverProps> = ({
               <Engineering fontSize='small' />
             </ListItemIcon>
             <ListItemText
-              primary={<Typography variant='body1'>Settings</Typography>}
-            />
-          </MenuItem>
-        </NextLink>
-        <NextLink href='/' passHref>
-          <MenuItem component='a'>
-            <ListItemIcon>
-              <SwapHoriz fontSize='small' />
-            </ListItemIcon>
-            <ListItemText
-              primary={
-                <Typography variant='body1'>Change organization</Typography>
-              }
+              primary={<Typography variant='body1'>개인정보 변경</Typography>}
             />
           </MenuItem>
         </NextLink>
         <Divider />
-        <MenuItem onClick={handleLogout}>
-          <ListItemIcon>
-            <Logout fontSize='small' />
-          </ListItemIcon>
-          <ListItemText
-            primary={<Typography variant='body1'>Logout</Typography>}
-          />
-        </MenuItem>
+        {isAuthencated ? (
+          <MenuItem onClick={handleLogout}>
+            <ListItemIcon>
+              <Logout fontSize='small' />
+            </ListItemIcon>
+            <ListItemText
+              primary={<Typography variant='body1'>로그아웃</Typography>}
+            />
+          </MenuItem>
+        ) : (
+          <MenuItem onClick={handleLogin}>
+            <ListItemIcon>
+              <Logout fontSize='small' />
+            </ListItemIcon>
+            <ListItemText
+              primary={<Typography variant='body1'>로그인</Typography>}
+            />
+          </MenuItem>
+        )}
       </Box>
     </Popover>
   )

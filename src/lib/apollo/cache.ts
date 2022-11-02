@@ -10,23 +10,7 @@ export const isInitializedVar = makeVar<boolean>(false)
 export const cache: InMemoryCache = new InMemoryCache({
   typePolicies: {
     Query: {
-      fields: {
-        user: {
-          read() {
-            return userVar()
-          },
-        },
-        isAuthenticated: {
-          read() {
-            return isAuthenticatedVar()
-          },
-        },
-        isInitialized: {
-          read() {
-            return isAuthenticatedVar()
-          },
-        },
-      },
+      fields: {},
     },
   },
 })
