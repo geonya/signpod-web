@@ -48,7 +48,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
     initialize()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
+  }, [data?.me.user])
 
   return <>{isInitialized ? children : <SplashScreen />}</>
 }

@@ -5,6 +5,7 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { DashboardLayout } from '../components/dashboard/dashboard-layout'
+import { HomeHero } from '../components/home/home-hero'
 import { userVar } from '../lib/apollo/cache'
 import { useMeQuery } from '../lib/graphql/__generated__'
 
@@ -27,7 +28,9 @@ const Home: NextPage = () => {
       <Head>
         <title>Main | signpod</title>
       </Head>
-      <Box>{user?.name}</Box>
+      <main>
+        <HomeHero />
+      </main>
     </>
   )
 }

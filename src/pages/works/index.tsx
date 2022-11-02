@@ -6,6 +6,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useState } from 'react'
 import { DashboardLayout } from '../../components/dashboard/dashboard-layout'
+import { SplashScreen } from '../../components/splash-screen'
 import { WorkGridList } from '../../components/works/work-grid-list'
 import {
   WorkFilters,
@@ -14,6 +15,7 @@ import {
 
 import { useMounted } from '../../hooks/use-mounted'
 import { userVar } from '../../lib/apollo/cache'
+import { useGetWorksQuery } from '../../lib/graphql/__generated__'
 import { Work } from '../../types/work'
 
 const Works: NextPage = () => {
@@ -30,6 +32,7 @@ const Works: NextPage = () => {
   const handleFiltersChange = () => {}
 
   const user = useReactiveVar(userVar)
+  const { data } = useGetWorksQuery()
   return (
     <>
       <Head>
@@ -64,7 +67,11 @@ const Works: NextPage = () => {
           </Box>
           <Card>
             <WorkListFilters onChange={handleFiltersChange} />
-            <WorkGridList />
+            {data?.getWorks.works ? (
+              <WorkGridList works={data?.getWorks.works} />
+            ) : (
+              <SplashScreen />
+            )}
           </Card>
         </Container>
       </Box>

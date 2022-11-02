@@ -1,0 +1,8 @@
+[
+  {
+    "origin": ["https://signpod.app"],
+    "method": ["*"],
+    "maxAgeSeconds": 3600,
+    "responseHeader": ["*"]
+  }
+]

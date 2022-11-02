@@ -19,6 +19,7 @@ import toast from 'react-hot-toast'
 import { TFile } from '../../types/file'
 import { client } from '../../lib/apollo/client'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 
 export const AccountGeneral: FC = (props) => {
   const router = useRouter()
@@ -45,7 +46,7 @@ export const AccountGeneral: FC = (props) => {
             email: formik.values.email,
             name: formik.values.name,
             company: formik.values.company,
-            avatar: preview || '',
+            avatar: preview || user.avatar || '',
           },
         })
       }
@@ -72,7 +73,6 @@ export const AccountGeneral: FC = (props) => {
       company: Yup.string().max(255),
     }),
     onSubmit: async (values, helpers): Promise<void> => {
-      console.log(file)
       try {
         await editAccountMutation({
           variables: {
@@ -121,7 +121,6 @@ export const AccountGeneral: FC = (props) => {
                   alignItems: 'center',
                   display: 'flex',
                 }}
-                component='label'
               >
                 <Avatar
                   src={preview || user?.avatar || ''}
@@ -131,6 +130,9 @@ export const AccountGeneral: FC = (props) => {
                     width: 64,
                     bgcolor: 'transparent',
                   }}
+                  component='a'
+                  href={user?.avatar || preview || ''}
+                  target='__blank'
                 >
                   <AccountCircle fontSize='large' color='action' />
                 </Avatar>

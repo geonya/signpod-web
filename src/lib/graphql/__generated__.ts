@@ -66,6 +66,13 @@ export type FindUserByIdOutput = {
   user?: Maybe<User>;
 };
 
+export type GetWorksOutput = {
+  __typename?: 'GetWorksOutput';
+  error?: Maybe<Scalars['String']>;
+  ok: Scalars['Boolean'];
+  works?: Maybe<Array<Work>>;
+};
+
 export type LoginInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -134,6 +141,7 @@ export type Photo = {
 export type Query = {
   __typename?: 'Query';
   findUserById: FindUserByIdOutput;
+  getWorks: GetWorksOutput;
   me: MeOutput;
 };
 
@@ -169,6 +177,10 @@ export type Work = {
 };
 
 export type UserFragmentFragment = { __typename?: 'User', id: number, name: string, email: string, avatar?: string | null, company?: string | null, createdAt: any, updatedAt: any };
+
+export type WorkFrgamentFragment = { __typename?: 'Work', id: number, title: string, description?: string | null, createdAt: any, updatedAt: any, category?: string | null, creator: { __typename?: 'User', id: number, name: string, email: string, avatar?: string | null }, photos: Array<{ __typename?: 'Photo', id: number, url: string, alt?: string | null }> };
+
+export type PhotoFragmentFragment = { __typename?: 'Photo', id: number, url: string, alt?: string | null, workId?: number | null };
 
 export type CreateAccountMutationVariables = Exact<{
   input: CreateAccountInput;
@@ -210,6 +222,11 @@ export type CreateWorkMutationVariables = Exact<{
 
 export type CreateWorkMutation = { __typename?: 'Mutation', createWork: { __typename?: 'CreateWorkOutput', ok: boolean, error?: string | null } };
 
+export type GetWorksQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetWorksQuery = { __typename?: 'Query', getWorks: { __typename?: 'GetWorksOutput', ok: boolean, error?: string | null, works?: Array<{ __typename?: 'Work', id: number, title: string, description?: string | null, createdAt: any, updatedAt: any, category?: string | null, creator: { __typename?: 'User', id: number, name: string, email: string, avatar?: string | null }, photos: Array<{ __typename?: 'Photo', id: number, url: string, alt?: string | null }> }> | null } };
+
 export const UserFragmentFragmentDoc = gql`
     fragment UserFragment on User {
   id
@@ -219,6 +236,35 @@ export const UserFragmentFragmentDoc = gql`
   company
   createdAt
   updatedAt
+}
+    `;
+export const WorkFrgamentFragmentDoc = gql`
+    fragment WorkFrgament on Work {
+  id
+  title
+  description
+  createdAt
+  updatedAt
+  category
+  creator {
+    id
+    name
+    email
+    avatar
+  }
+  photos {
+    id
+    url
+    alt
+  }
+}
+    `;
+export const PhotoFragmentFragmentDoc = gql`
+    fragment PhotoFragment on Photo {
+  id
+  url
+  alt
+  workId
 }
     `;
 export const CreateAccountDocument = gql`
@@ -430,3 +476,41 @@ export function useCreateWorkMutation(baseOptions?: Apollo.MutationHookOptions<C
 export type CreateWorkMutationHookResult = ReturnType<typeof useCreateWorkMutation>;
 export type CreateWorkMutationResult = Apollo.MutationResult<CreateWorkMutation>;
 export type CreateWorkMutationOptions = Apollo.BaseMutationOptions<CreateWorkMutation, CreateWorkMutationVariables>;
+export const GetWorksDocument = gql`
+    query GetWorks {
+  getWorks {
+    ok
+    error
+    works {
+      ...WorkFrgament
+    }
+  }
+}
+    ${WorkFrgamentFragmentDoc}`;
+
+/**
+ * __useGetWorksQuery__
+ *
+ * To run a query within a React component, call `useGetWorksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetWorksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetWorksQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetWorksQuery(baseOptions?: Apollo.QueryHookOptions<GetWorksQuery, GetWorksQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetWorksQuery, GetWorksQueryVariables>(GetWorksDocument, options);
+      }
+export function useGetWorksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetWorksQuery, GetWorksQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetWorksQuery, GetWorksQueryVariables>(GetWorksDocument, options);
+        }
+export type GetWorksQueryHookResult = ReturnType<typeof useGetWorksQuery>;
+export type GetWorksLazyQueryHookResult = ReturnType<typeof useGetWorksLazyQuery>;
+export type GetWorksQueryResult = Apollo.QueryResult<GetWorksQuery, GetWorksQueryVariables>;

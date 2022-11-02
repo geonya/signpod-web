@@ -12,6 +12,37 @@ const USER_FRAGMENT = gql`
   }
 `
 
+const WORK_FRAGMENT = gql`
+  fragment WorkFrgament on Work {
+    id
+    title
+    description
+    createdAt
+    updatedAt
+    category
+    creator {
+      id
+      name
+      email
+      avatar
+    }
+    photos {
+      id
+      url
+      alt
+    }
+  }
+`
+
+const PHOTO_FRAGMENT = gql`
+  fragment PhotoFragment on Photo {
+    id
+    url
+    alt
+    workId
+  }
+`
+
 gql`
   mutation CreateAccount($input: CreateAccountInput!) {
     createAccount(input: $input) {
@@ -59,4 +90,14 @@ gql`
     }
   }
 
+  query GetWorks {
+    getWorks {
+      ok
+      error
+      works {
+        ...WorkFrgament
+      }
+    }
+    ${WORK_FRAGMENT}
+  }
 `

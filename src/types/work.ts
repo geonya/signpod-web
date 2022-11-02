@@ -1,11 +1,6 @@
-import { Photo } from './photo'
-import { Tag } from './tag'
+import { GetWorksQuery } from '../lib/graphql/__generated__'
 
-export interface Work {
-  id: string
-  category: string
-  createdAt: string
-  updatedAt: string
-  photos: Photo[]
-  tags: Tag[]
-}
+export type Work = Omit<
+  NonNullable<GetWorksQuery['getWorks']['works']>,
+  '__typename'
+>
