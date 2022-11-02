@@ -1,37 +1,22 @@
 import {
-  AttachMoney,
-  CalendarViewMonth,
-  Chat,
   Check,
-  Close,
-  ContentPaste,
-  CreditCard,
   Drafts,
   Home,
   ListAlt,
-  LocalPostOffice,
-  Lock,
-  Mail,
-  Newspaper,
   Person,
   ReceiptRounded,
-  Share,
-  ShoppingBag,
-  ShoppingCart,
   Storefront,
 } from '@mui/icons-material'
 import {
   Box,
   Chip,
-  Divider,
   Drawer,
   Theme,
   Typography,
   useMediaQuery,
 } from '@mui/material'
 import { useRouter } from 'next/router'
-import { FC, ReactNode, useEffect, useMemo, useRef, useState } from 'react'
-import { type TFunction, useTranslation } from 'react-i18next'
+import { FC, ReactNode, useEffect, useMemo } from 'react'
 import { Scrollbar } from '../scrollbar'
 import { DashboardSidebarSection } from './dashboard-sidebar-section'
 import PropTypes from 'prop-types'
@@ -54,17 +39,17 @@ interface Section {
   items: Item[]
 }
 
-const getSections = (t: TFunction): Section[] => [
+const getSections = (): Section[] => [
   {
-    title: t('Signage'),
+    title: 'Signage',
     items: [
       {
-        title: t('포트폴리오'),
+        title: '포트폴리오',
         path: '/works',
         icon: <Home fontSize='small' />,
       },
       {
-        title: t('제작 문의'),
+        title: '제작 문의',
         path: '/contact',
         icon: <Drafts fontSize='small' />,
         chip: (
@@ -85,20 +70,20 @@ const getSections = (t: TFunction): Section[] => [
         ),
       },
       {
-        title: t('스토어'),
+        title: '스토어',
         path: '/store',
         icon: <Storefront fontSize='small' />,
         children: [
           {
-            title: t('브랜딩'),
+            title: '브랜딩',
             path: '/store/branding',
           },
           {
-            title: t('현판'),
+            title: '현판',
             path: '/store/signboard',
           },
           {
-            title: t('자재'),
+            title: '자재',
             path: '/store/material',
           },
         ],
@@ -106,126 +91,126 @@ const getSections = (t: TFunction): Section[] => [
     ],
   },
   {
-    title: t('Account'),
+    title: 'Account',
     items: [
       {
-        title: t('내 계정'),
+        title: '내 계정',
         path: '/account',
         icon: <Person fontSize='small' />,
       },
       // {
-      //   title: t('Customers'),
+      //   title: 'Customers'),
       //   path: '/customers',
       //   icon: <Person fontSize='small' />,
       //   children: [
       //     {
-      //       title: t('List'),
+      //       title: 'List'),
       //       path: '/customers',
       //     },
       //     {
-      //       title: t('Details'),
+      //       title: 'Details'),
       //       path: '/customers/1',
       //     },
       //     {
-      //       title: t('Edit'),
+      //       title: 'Edit'),
       //       path: '/customers/1/edit',
       //     },
       //   ],
       // },
       // {
-      //   title: t('Products'),
+      //   title: 'Products'),
       //   path: '/products',
       //   icon: <ShoppingBag fontSize='small' />,
       //   children: [
       //     {
-      //       title: t('List'),
+      //       title: 'List'),
       //       path: '/products',
       //     },
       //     {
-      //       title: t('Create'),
+      //       title: 'Create'),
       //       path: '/products/new',
       //     },
       //   ],
       // },
       // {
-      //   title: t('Orders'),
+      //   title: 'Orders'),
       //   icon: <ShoppingCart fontSize='small' />,
       //   path: '/orders',
       //   children: [
       //     {
-      //       title: t('List'),
+      //       title: 'List'),
       //       path: '/orders',
       //     },
       //     {
-      //       title: t('Details'),
+      //       title: 'Details'),
       //       path: '/orders/1',
       //     },
       //   ],
       // },
       {
-        title: t('견적서'),
+        title: '견적서',
         path: '/estimates',
         icon: <ReceiptRounded fontSize='small' />,
       },
       {
-        title: t('일정 관리'),
+        title: '일정 관리',
         path: '/todo',
         icon: <ListAlt fontSize='small' />,
       },
     ],
   },
   // {
-  //   title: t('Platforms'),
+  //   title: 'Platforms'),
   //   items: [
   //     {
-  //       title: t('Job Listings'),
+  //       title: 'Job Listings'),
   //       path: '/jobs',
   //       icon: <LocalPostOffice fontSize='small' />,
   //       children: [
   //         {
-  //           title: t('Browse'),
+  //           title: 'Browse'),
   //           path: '/jobs',
   //         },
   //         {
-  //           title: t('Details'),
+  //           title: 'Details'),
   //           path: '/jobs/companies/1',
   //         },
   //         {
-  //           title: t('Create'),
+  //           title: 'Create'),
   //           path: '/jobs/new',
   //         },
   //       ],
   //     },
   //     {
-  //       title: t('Social Media'),
+  //       title: 'Social Media'),
   //       path: '/social',
   //       icon: <Share fontSize='small' />,
   //       children: [
   //         {
-  //           title: t('Profile'),
+  //           title: 'Profile'),
   //           path: '/social/profile',
   //         },
   //         {
-  //           title: t('Feed'),
+  //           title: 'Feed'),
   //           path: '/social/feed',
   //         },
   //       ],
   //     },
   //     {
-  //       title: t('Blog'),
+  //       title: 'Blog'),
   //       path: '/blog',
   //       icon: <Newspaper fontSize='small' />,
   //       children: [
   //         {
-  //           title: t('Post List'),
+  //           title: 'Post List'),
   //           path: '/blog',
   //         },
   //         {
-  //           title: t('Post Details'),
+  //           title: 'Post Details'),
   //           path: '/blog/1',
   //         },
   //         {
-  //           title: t('Post Create'),
+  //           title: 'Post Create'),
   //           path: '/blog/new',
   //         },
   //       ],
@@ -233,65 +218,65 @@ const getSections = (t: TFunction): Section[] => [
   //   ],
   // },
   // {
-  //   title: t('Apps'),
+  //   title: 'Apps'),
   //   items: [
   //     {
-  //       title: t('Kanban'),
+  //       title: 'Kanban'),
   //       path: '/kanban',
   //       icon: <ContentPaste fontSize='small' />,
   //     },
   //     {
-  //       title: t('Mail'),
+  //       title: 'Mail'),
   //       path: '/mail',
   //       icon: <Mail fontSize='small' />,
   //     },
   //     {
-  //       title: t('Chat'),
+  //       title: 'Chat'),
   //       path: '/chat',
   //       icon: <Chat fontSize='small' />,
   //     },
   //     {
-  //       title: t('Calendar'),
+  //       title: 'Calendar'),
   //       path: '/calendar',
   //       icon: <CalendarViewMonth fontSize='small' />,
   //     },
   //   ],
   // },
   // {
-  //   title: t('Pages'),
+  //   title: 'Pages'),
   //   items: [
   //     {
-  //       title: t('Auth'),
+  //       title: 'Auth'),
   //       path: '/authentication',
   //       icon: <Lock fontSize='small' />,
   //       children: [
   //         {
-  //           title: t('Register'),
+  //           title: 'Register'),
   //           path: '/authentication/register?disableGuard=true',
   //         },
   //         {
-  //           title: t('Login'),
+  //           title: 'Login'),
   //           path: '/authentication/login?disableGuard=true',
   //         },
   //       ],
   //     },
   //     {
-  //       title: t('Pricing'),
+  //       title: 'Pricing'),
   //       path: '/pricing',
   //       icon: <CreditCard fontSize='small' />,
   //     },
   //     {
-  //       title: t('Checkout'),
+  //       title: 'Checkout'),
   //       path: '/checkout',
   //       icon: <AttachMoney fontSize='small' />,
   //     },
   //     {
-  //       title: t('Contact'),
+  //       title: 'Contact'),
   //       path: '/contact',
   //       icon: <Drafts fontSize='small' />,
   //     },
   //     {
-  //       title: t('Error'),
+  //       title: 'Error'),
   //       path: '/error',
   //       icon: <Close fontSize='small' />,
   //       children: [
@@ -319,8 +304,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
 }) => {
   const router = useRouter()
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'))
-  const { t } = useTranslation()
-  const sections = useMemo(() => getSections(t), [t])
+  const sections = useMemo(() => getSections(), [])
 
   const handlePathChange = () => {
     if (!router.isReady) return
@@ -383,7 +367,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = ({
                 signpod inc
               </Typography>
               <Typography color='neutral.400' variant='body2'>
-                {t('Plan')} : VIP
+                Plan : VIP
               </Typography>
             </div>
             <Check

@@ -2,7 +2,6 @@ import { Children } from 'react'
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import createEmotionCache from '../utils/createEmotionCache'
 import createEmotionServer from '@emotion/server/create-instance'
-import { ACCESS_TOKEN } from '../constants'
 
 export default class MyDocument extends Document {
   render() {
